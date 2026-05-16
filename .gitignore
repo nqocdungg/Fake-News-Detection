@@ -1,1 +1,12 @@
 preprocessed_isot_full.csv
+.venv/
+.uv-cache/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+data/raw/*
+!data/raw/.gitkeep
+
+models/*.pkl
+models/*.joblib
