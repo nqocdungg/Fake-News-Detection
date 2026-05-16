@@ -1,22 +1,46 @@
 # Fake News Detection
 
-Du an phat hien tin gia bang Machine Learning. Pipeline chinh gom: preprocessing, EDA, TF-IDF vectorization, huan luyen 4 mo hinh, so sanh ket qua va phan tich loi.
+Hệ thống phát hiện tin giả sử dụng Machine Learning trên bộ dữ liệu ISOT.
+Pipeline gồm:
+- preprocessing
+- exploratory data analysis (EDA)
+- TF-IDF vectorization
+- huấn luyện và đánh giá nhiều mô hình phân loại
+- phân tích lỗi mô hình
 
-## Cau truc thu muc
+## Tech Stack
+
+- Python 3.12
+- pandas
+- scikit-learn
+- matplotlib
+- seaborn
+- nltk
+
+## Dataset
+
+- ISOT Fake News Dataset
+- Source: https://www.kaggle.com/datasets/rahulogoel/isot-fake-news-dataset
+  
+## Cấu trúc thư mục
 
 ```text
 data/
-  raw/                 # Du lieu goc, vi du Fake.csv va True.csv cua ISOT
-  processed/           # Du lieu da tien xu ly va train/test split
-docs/                  # Ghi chu tham chieu tu tai lieu du an
-models/                # Vectorizer va model da train
-notebooks/             # Notebook chay theo tung buoc
-reports/               # Hinh anh, bang ket qua, bao cao
-src/                   # Ma nguon tai su dung
+├── raw/                # Dữ liệu gốc
+└── processed/          # Dữ liệu đã tiền xử lý
+
+docs/                   # Tài liệu dự án
+models/                 # Mô hình huấn luyện
+notebooks/              # Notebook
+reports/                # Báo cáo
+src/                    # Mã nguồn tái sử dụng
+
+.gitignore
 requirements.txt
+README.md
 ```
 
-## Clone va cai dat
+## Clone và cài đặt
 
 ```bash
 git clone <repository-url>
@@ -31,25 +55,21 @@ Windows:
 pip install -r requirements.txt
 ```
 
-Neu may co `uv`, nen dung cach nay tren Windows:
-
-```bash
-uv venv --python 3.12 .venv
-uv pip install -r requirements.txt
-```
-
 macOS/Linux:
 
 ```bash
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+## Run
 
-## Du lieu
+Mở Jupyter Notebook:
 
-Dat du lieu ISOT goc vao `data/raw/`. Neu da co file tien xu ly, cac file CSV nam trong `data/processed/`.
+```bash
+jupyter notebook
+```
 
-## Thu tu chay notebook
+## Thứ tự chạy notebook
 
 1. `notebooks/01_preprocessing.ipynb`: lam sach text, xu ly Reuters leakage, tao du lieu tien xu ly.
 2. `notebooks/02_eda.ipynb`: truc quan hoa phan bo nhan, do dai text, word cloud, top unigram/bigram.
@@ -61,7 +81,7 @@ Dat du lieu ISOT goc vao `data/raw/`. Neu da co file tien xu ly, cac file CSV na
 8. `notebooks/08_comparison.ipynb`: danh gia 4 model tren test set va so sanh metric.
 9. `notebooks/09_feature_error_analysis.ipynb`: phan tich tu quan trong va cac mau du doan sai.
 
-## Ket qua dau ra
+## Kết quả đầu ra
 
 - `models/tfidf_vectorizer.pkl`
 - `models/naive_bayes_model.pkl`
