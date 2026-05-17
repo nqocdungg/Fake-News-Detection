@@ -1,2 +1,4 @@
 preprocessed_isot_full.csv
 venv/
+preprocessed_isot.csv
+train_preprocessed.csv
