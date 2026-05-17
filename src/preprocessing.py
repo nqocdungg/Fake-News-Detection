@@ -57,7 +57,7 @@ def preprocess_text(text: str) -> str:
     tokens = [
         _lemmatizer.lemmatize(word)
         for word in text.split()
-        if word not in _stop_words and len(word) > 2
+        if (word in _negation_words) or (word not in _stop_words and len(word) > 2)
     ]
 
     # 7. Re-join and strip extra whitespace
