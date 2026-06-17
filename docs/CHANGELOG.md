@@ -56,4 +56,3 @@
 
 ### Hoàn thành
 - `docs/plan/master-plan.md` — kế hoạch tổng thể 10 phases (Phase 0–9)
-- `AGENTS.md` — hướng dẫn cho AI agents: conventions, commands, CHANGELOG policy
