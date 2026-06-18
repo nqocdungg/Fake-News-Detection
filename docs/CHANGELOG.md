@@ -2,6 +2,37 @@
 
 ---
 
+## [2026-06-18] Phase 7 — Dataset 2 Integration: WELFake (7.0 → 7.3)
+
+### Hoàn thành
+- `docs/plan/phase-07-dataset2-welfake.md` — kế hoạch tổng thể Phase 7, lý do chọn WELFake, output files
+- `docs/plan/phase-07.1-preprocessing.md` — kế hoạch 7 bước preprocessing WELFake
+- `docs/plan/phase-07.2-eda.md` — kế hoạch EDA với 6 bước phân tích
+- `docs/plan/phase-07.3-vectorization.md` — kế hoạch vectorization độc lập
+- `notebooks/10_welfake_preprocessing.ipynb` — pipeline: load → xử lý null → gộp title+text → preprocess_text() → lưu CSV
+- `notebooks/11_welfake_eda.ipynb` — label dist, text length, word cloud, top n-grams, so sánh ISOT vs WELFake
+- `notebooks/12_welfake_vectorization.ipynb` — TF-IDF config comparison, fit/transform, lưu splits + vectorizer
+- `data/welfake/` — thư mục chứa splits WELFake (tạo khi chạy notebook 12)
+
+### Thông tin Dataset
+- **WELFake**: ~72,134 rows, nguồn gốc 0=FAKE (~35,028), 1=REAL (~37,106)
+- **Nguồn**: Kaggle (saurabhshahane/fake-news-classification) — notebook 10 tự tải và cache bằng KaggleHub
+- **Cột**: `title` + `text` → gộp thành `full_text` trước preprocessing
+- **Label output**: đổi nhãn nguồn thành `0=REAL`, `1=FAKE` để nhất quán với pipeline ISOT hiện tại
+
+### Quyết định kỹ thuật
+- Vectorizer fit **độc lập** (`tfidf_vectorizer_welfake.pkl`) — không dùng lại ISOT vectorizer
+- Hyperparameters nhất quán: `max_features=5000`, `ngram_range=(1,2)` để cross-eval công bằng
+- Split 70/15/15 stratified, `random_state=42`
+- Cùng `preprocess_text()` từ `src/preprocessing.py` (Reuters leakage fix giữ lại — WELFake chứa McIntire/Reuters articles)
+
+### Ghi chú
+- Notebooks chưa chạy; notebook 10 sẽ tự tải WELFake từ Kaggle khi thực thi
+- Mọi code đã được viết hoàn chỉnh; cần cài dependencies từ `requirements.txt` trước khi chạy
+- Phase 7 sẽ đánh dấu ✅ sau khi toàn bộ 3 notebooks chạy thành công
+
+---
+
 ## [2026-06-17] Phase 4 — Model Training: SVM (LinearSVC)
 
 ### Hoàn thành

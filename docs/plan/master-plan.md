@@ -32,7 +32,7 @@ Thu thập dữ liệu (2 datasets)
 | 4 | Model Training (4 thuật toán) | 🔄 Đang thực hiện |
 | 5 | Model Comparison (same-dataset) | ⏳ Chưa bắt đầu |
 | 6 | Feature & Error Analysis | ⏳ Chưa bắt đầu |
-| 7 | Dataset 2 Integration | ⏳ Chưa bắt đầu |
+| 7 | Dataset 2 Integration (WELFake) | 🔄 Đang thực hiện |
 | 8 | Cross-Dataset Evaluation | ⏳ Chưa bắt đầu |
 | 9 | Report & Documentation | ⏳ Chưa bắt đầu |
 
@@ -114,7 +114,7 @@ Thu thập dữ liệu (2 datasets)
 ---
 
 ### Phase 4 — Model Training
-**Trạng thái:** 🔄 Đang thực hiện  
+**Trạng thái:** 🔄 Đang thực hiện
 **File kế hoạch:** `docs/plan/phase-4-model-training.md`
 
 Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → best params → predict val → classification report + confusion matrix + training time → lưu `.pkl`.
@@ -168,8 +168,9 @@ Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → bes
 ---
 
 ### Phase 7 — Dataset 2 Integration *(MỚI)*
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**File kế hoạch:** `docs/plan/phase-7-dataset2.md`
+**Trạng thái:** 🔄 Đang thực hiện
+
+**File kế hoạch:** `docs/plan/phase-07-dataset2-welfake.md`
 
 **Mục đích:** Đánh giá tính tổng quát (Generalization) của mô hình khi gặp dữ liệu lạ.
 
@@ -180,16 +181,20 @@ Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → bes
 > **Khuyến nghị:** WELFake vì có format tiêu đề + nội dung tương đồng ISOT, dễ áp dụng cùng pipeline hơn.
 
 **Pipeline áp dụng lại:**
-1. Áp dụng `preprocess_text()` từ `src/preprocessing.py`
-2. Tạo TF-IDF riêng cho Dataset 2 (fit trên train set của D2)
-3. Split 70/15/15 tương tự Phase 3
+1. Tự động tải WELFake bằng KaggleHub
+2. Chuẩn hóa nhãn nguồn về `REAL=0`, `FAKE=1` giống ISOT
+3. Áp dụng `preprocess_text()` từ `src/preprocessing.py`
+4. Tạo TF-IDF riêng cho WELFake (fit trên train set)
+5. Split 70/15/15 tương tự Phase 3
 
 **Deliverables:**
-- `notebooks/10_dataset2_preprocessing.ipynb`
-- `data/processed/preprocessed_d2_full.csv`
-- `data/X_train_d2_tfidf.pkl`, `data/X_test_d2_tfidf.pkl`, v.v.
-- `models/tfidf_vectorizer_d2.pkl`
-- `models/*_d2_model.pkl` (4 models huấn luyện trên D2)
+- `notebooks/10_welfake_preprocessing.ipynb`
+- `notebooks/11_welfake_eda.ipynb`
+- `notebooks/12_welfake_vectorization.ipynb`
+- `data/processed/preprocessed_welfake_full.csv`
+- `data/welfake/X_train_tfidf.pkl`, `X_val_tfidf.pkl`, `X_test_tfidf.pkl`
+- `data/welfake/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
+- `models/tfidf_vectorizer_welfake.pkl`
 
 ---
 
@@ -212,7 +217,7 @@ Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → bes
 - Model nào robust nhất trước domain shift?
 
 **Deliverables:**
-- `notebooks/11_cross_dataset_eval.ipynb`
+- `notebooks/13_cross_dataset_eval.ipynb`
 - Bảng so sánh 2x2 (4 models × 2 scenarios)
 
 ---

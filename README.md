@@ -19,8 +19,10 @@ Pipeline gồm:
 
 ## Dataset
 
-- ISOT Fake News Dataset
-- Source: https://www.kaggle.com/datasets/rahulogoel/isot-fake-news-dataset
+- ISOT Fake News Dataset: https://www.kaggle.com/datasets/rahulogoel/isot-fake-news-dataset
+- WELFake Dataset: https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification
+
+Quy ước nhãn dùng trong project: `REAL=0`, `FAKE=1`.
   
 ## Cấu trúc thư mục
 
@@ -80,6 +82,9 @@ jupyter notebook
 7. `notebooks/07_random_forest.ipynb`: train va tune Random Forest.
 8. `notebooks/08_comparison.ipynb`: danh gia 4 model tren test set va so sanh metric.
 9. `notebooks/09_feature_error_analysis.ipynb`: phan tich tu quan trong va cac mau du doan sai.
+10. `notebooks/10_welfake_preprocessing.ipynb`: tai WELFake bang KaggleHub, chuan hoa nhan va tien xu ly.
+11. `notebooks/11_welfake_eda.ipynb`: EDA WELFake va so sanh voi ISOT.
+12. `notebooks/12_welfake_vectorization.ipynb`: chia 70/15/15 va tao TF-IDF rieng cho WELFake.
 
 ## Kết quả đầu ra
 
