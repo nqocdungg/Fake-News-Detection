@@ -2,6 +2,29 @@
 
 ---
 
+## [2026-06-20] Phase 4 — Model Training: Tinh chỉnh Logistic Regression & Đồng bộ tài liệu
+
+### Hoàn thành
+- `notebooks/05_logistic_regression.ipynb` — Tinh chỉnh tham số mở rộng, vẽ Confusion Matrix + ROC Curve song song, thêm các cell giải thích Markdown.
+- `notebooks/02_eda.ipynb` — Định dạng và làm đẹp các cell Markdown bằng các khối alert/callout.
+- `models/lr_model.pkl` — Mô hình Logistic Regression tối ưu nhất sau tinh chỉnh (40.9 KB).
+- `reports/lr_evaluation_plots.png` — Biểu đồ Confusion Matrix và ROC Curve song song trên tập Validation.
+
+### Kết quả tinh chỉnh Logistic Regression
+- **Không gian GridSearch mới:** 350 lượt fit (70 combinations × 5 folds).
+- **Siêu tham số tối ưu:** `{'C': 20.0, 'class_weight': 'balanced', 'max_iter': 100, 'penalty': 'l2', 'solver': 'saga', 'tol': 0.01}`.
+- **Hiệu năng:**
+  - Điểm F1 tốt nhất trên Cross-Validation đạt **98.35%** (tăng **0.11%** so với baseline 98.24%).
+  - Đạt điểm F1/Accuracy khoảng **98.64%** trên tập Validation.
+  - Chỉ số AUC đạt **0.9991** (phân loại gần như hoàn hảo).
+- **Thời gian chạy:** **372.53 giây** (~6 phút 12 giây), tối ưu hóa tốc độ nhờ thiết lập `tol=0.01` và `max_iter=100` cho solver `saga`.
+
+### Ghi chú kỹ thuật
+- Mặc dù hỗ trợ `l1` (Lasso) và `elasticnet`, GridSearchCV vẫn chọn `l2` (Ridge) làm penalty tối ưu, cho thấy việc giữ lại thông tin từ mọi từ khóa trong từ vựng 5,000 từ vẫn hiệu quả hơn.
+- `class_weight='balanced'` giúp điều chỉnh ngưỡng phân lớp tối ưu hơn đối với sự mất cân bằng nhẹ của dữ liệu huấn luyện.
+
+---
+
 ## [2026-06-18] Phase 7 — Dataset 2 Integration: WELFake (7.0 → 7.3)
 
 ### Hoàn thành
