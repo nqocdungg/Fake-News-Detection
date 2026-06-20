@@ -121,10 +121,10 @@ Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → bes
 
 | Model | Notebook | Output | Trạng thái |
 |-------|----------|--------|------------|
-| Naive Bayes | `04_naive_bayes.ipynb` | `models/naive_bayes_model.pkl` | 🔄 |
-| Logistic Regression | `05_logistic_regression.ipynb` | `models/lr_model.pkl` | 🔄 |
-| SVM | `06_svm.ipynb` | `models/svm_model.pkl` | 🔄 |
-| Random Forest | `07_random_forest.ipynb` | `models/rf_model.pkl` | 🔄 |
+| Naive Bayes | `04_naive_bayes.ipynb` | `models/naive_bayes_model.pkl` | ✅ Hoàn thành |
+| Logistic Regression | `05_logistic_regression.ipynb` | `models/lr_model.pkl` | ✅ Hoàn thành |
+| SVM | `06_svm.ipynb` | `models/svm_model.pkl` | ✅ Hoàn thành |
+| Random Forest | `07_random_forest.ipynb` | `models/rf_model.pkl` | ⏳ Chưa bắt đầu |
 
 **Hyperparameter search:**
 
