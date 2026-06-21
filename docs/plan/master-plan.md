@@ -1,23 +1,33 @@
 # Master Plan — Fake News Detection
 
 > **Học phần:** Nhập môn Trí tuệ nhân tạo  
-> **Loại bài toán:** Phân loại văn bản nhị phân (FAKE / REAL)  
-> **Cập nhật lần cuối:** 2026-06-17
+> **Loại bài toán:** Phân loại văn bản nhị phân — **0 = REAL, 1 = FAKE** (nhất quán toàn dự án)  
+> **Cập nhật lần cuối:** 2026-06-21
 
 ---
 
 ## Tổng quan kiến trúc
 
 ```
-Thu thập dữ liệu (2 datasets)
-  → Tiền xử lý NLP
-  → TF-IDF Feature Extraction
-  → Huấn luyện 4 mô hình ML
-  → Đánh giá trong cùng dataset
-  → Cross-Dataset Evaluation (Generalization)
-  → So sánh & Phân tích
-  → Báo cáo
+Thu thập dữ liệu (ISOT + WELFake)
+  → Tiền xử lý NLP  →  TF-IDF Feature Extraction
+  → Huấn luyện 4 mô hình ML (ISOT)
+  → Đánh giá trong cùng dataset (Thí nghiệm 1)
+  → Huấn luyện 4 mô hình ML (WELFake)
+  → Cross-Dataset Evaluation / Generalization (Thí nghiệm 2)
+  → So sánh & Phân tích  →  Báo cáo
 ```
+
+---
+
+## Quy ước nhãn (QUAN TRỌNG)
+
+| Nhãn số | Ý nghĩa | Áp dụng cho |
+|---------|---------|-------------|
+| **0** | **REAL** (tin thật) | ISOT & WELFake |
+| **1** | **FAKE** (tin giả) | ISOT & WELFake |
+
+> ⚠️ `notebooks/06_svm.ipynb` có lỗi hiển thị nhãn trong classification report (`FAKE(0)` / `REAL(1)` bị hoán vị). Model và kết quả số liệu vẫn đúng — chỉ nhãn in ra trên màn hình bị ngược. Cần sửa trước Phase 5.
 
 ---
 
@@ -26,15 +36,15 @@ Thu thập dữ liệu (2 datasets)
 | Phase | Tên | Trạng thái |
 |-------|-----|------------|
 | 0 | Project Setup | ✅ Hoàn thành |
-| 1 | Data & Preprocessing (ISOT) | ✅ Hoàn thành |
-| 2 | Exploratory Data Analysis | ✅ Hoàn thành |
-| 3 | TF-IDF Vectorization | ✅ Hoàn thành |
-| 4 | Model Training (4 thuật toán) | 🔄 Đang thực hiện |
-| 5 | Model Comparison (same-dataset) | ⏳ Chưa bắt đầu |
-| 6 | Feature & Error Analysis | ⏳ Chưa bắt đầu |
-| 7 | Dataset 2 Integration (WELFake) | 🔄 Đang thực hiện |
-| 8 | Cross-Dataset Evaluation | ⏳ Chưa bắt đầu |
-| 9 | Report & Documentation | ⏳ Chưa bắt đầu |
+| 1 | Preprocessing ISOT | ✅ Hoàn thành |
+| 2 | EDA ISOT | ✅ Hoàn thành |
+| 3 | TF-IDF Vectorization ISOT | ✅ Hoàn thành |
+| 4 | Model Training ISOT (4 thuật toán) | 🔄 3/4 xong (RF còn thiếu) |
+| 5 | Model Comparison ISOT (same-dataset) | ⏳ Chờ Phase 4 hoàn thành |
+| 6 | Feature & Error Analysis | ⏳ Chờ Phase 5 |
+| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 xong, 7.4 chưa bắt đầu |
+| 8 | Cross-Dataset Evaluation | ⏳ Chờ Phase 4 + 7.4 |
+| 9 | Report & Documentation | ⏳ Chờ tất cả |
 
 ---
 
@@ -43,201 +53,223 @@ Thu thập dữ liệu (2 datasets)
 ---
 
 ### Phase 0 — Project Setup
-**Trạng thái:** ✅ Hoàn thành  
-**File kế hoạch:** —
-
-**Deliverables đã có:**
-- `README.md` — hướng dẫn cài đặt & chạy
-- `requirements.txt` — pandas, numpy, scikit-learn, nltk, matplotlib, seaborn, wordcloud, joblib, jupyter, ipykernel
-- `.gitignore`
-- Cấu trúc thư mục: `data/raw/`, `data/processed/`, `notebooks/`, `src/`, `models/`, `reports/`, `docs/`
-
----
-
-### Phase 1 — Data & Preprocessing (ISOT)
-**Trạng thái:** ✅ Hoàn thành  
-**File kế hoạch:** `docs/plan/phase-1-preprocessing.md`
-
-**Dataset:** ISOT Fake News Dataset (~21K real, ~23K fake, tiếng Anh)  
-**Nguồn:** https://www.kaggle.com/datasets/rahulogoel/isot-fake-news-dataset
-
-**Pipeline NLP:**
-1. Chuyển về chữ thường
-2. Loại bỏ URL, ký tự đặc biệt, dấu câu
-3. Fix Reuters leakage (`re.sub(r'\(Reuters\)|\bReuters\b', '', text)`)
-4. Giữ lại negation words (no, not, never, neither) trước khi xóa stopwords
-5. Tokenization
-6. Stopword Removal
-7. Lemmatization
-
-**Deliverables đã có:**
-- `src/preprocessing.py` — hàm `preprocess_text(text)` tái sử dụng
-- `notebooks/01_preprocessing.ipynb`
-- `data/processed/preprocessed_isot_full.csv`
-
----
-
-### Phase 2 — Exploratory Data Analysis
-**Trạng thái:** ✅ Hoàn thành  
-**File kế hoạch:** `docs/plan/phase-2-eda.md`
-
-**Nội dung EDA:**
-- Phân phối nhãn fake/real (pie chart + bar)
-- Histogram độ dài text (theo từ) của fake vs real
-- Word cloud fake và real
-- Top 20 unigrams và bigrams mỗi class
-- Kiểm tra null, duplicate, sample text
-
-**Deliverables đã có:**
-- `notebooks/02_eda.ipynb`
-- Biểu đồ xuất vào `reports/`
-
----
-
-### Phase 3 — TF-IDF Vectorization
-**Trạng thái:** ✅ Hoàn thành  
-**File kế hoạch:** `docs/plan/phase-3-vectorization.md`
-
-**Chi tiết:**
-- Split: 70% train / 15% val / 15% test (stratified)
-- Fit vectorizer **chỉ trên train set** (tránh data leakage)
-- `max_features`: thử 3000 / 5000 / 10000
-- `ngram_range`: thử (1,1) / (1,2) — bigram bắt ngữ cảnh cụm từ
-- Lưu vectorizer để tái sử dụng
-
-**Deliverables đã có:**
-- `notebooks/03_vectorization.ipynb`
-- `data/X_train_tfidf.pkl`, `data/X_val_tfidf.pkl`, `data/X_test_tfidf.pkl`
-- `data/y_train.pkl`, `data/y_val.pkl`, `data/y_test.pkl`
-- `models/tfidf_vectorizer.pkl` *(cần xác nhận)*
-
----
-
-### Phase 4 — Model Training
-**Trạng thái:** 🔄 Đang thực hiện
-**File kế hoạch:** `docs/plan/phase-4-model-training.md`
-
-Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → best params → predict val → classification report + confusion matrix + training time → lưu `.pkl`.
-
-| Model | Notebook | Output | Trạng thái |
-|-------|----------|--------|------------|
-| Naive Bayes | `04_naive_bayes.ipynb` | `models/naive_bayes_model.pkl` | ✅ Hoàn thành |
-| Logistic Regression | `05_logistic_regression.ipynb` | `models/lr_model.pkl` | ✅ Hoàn thành |
-| SVM | `06_svm.ipynb` | `models/svm_model.pkl` | ✅ Hoàn thành |
-| Random Forest | `07_random_forest.ipynb` | `models/rf_model.pkl` | ⏳ Chưa bắt đầu |
-
-**Hyperparameter search:**
-
-- **Naive Bayes:** `alpha` ∈ [0.01, 0.1, 0.5, 1.0, 2.0], `fit_prior` ∈ [True, False]
-- **Logistic Regression:** `C` ∈ [0.1, 0.5, 1.0, 2.0, 5.0], `solver` ∈ ['lbfgs', 'saga'], `max_iter` ∈ [500, 1000]
-- **SVM:** `LinearSVC` (C ∈ [0.01, 0.1, 1, 10]) vs `SVC(kernel='rbf')` (C ∈ [0.1, 1, 10], gamma ∈ ['scale', 'auto'])
-- **Random Forest:** `n_estimators` ∈ [100, 200, 300], `max_depth` ∈ [None, 10, 20], `min_samples_split` ∈ [2, 5]
-
----
-
-### Phase 5 — Model Comparison (Same-Dataset)
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**File kế hoạch:** `docs/plan/phase-5-comparison.md`
-
-**Thí nghiệm 1:** Train ISOT → Test ISOT (dùng test set lần đầu tiên)
-
-**Nội dung:**
-- Load cả 4 model đã lưu
-- Predict trên test set ISOT
-- Bảng tổng hợp: Accuracy / Precision / Recall / F1 / Training time
-- Bar chart so sánh F1 của 4 model
-- Nhận xét: model nào tốt nhất, đánh đổi accuracy vs speed
+**Trạng thái:** ✅ Hoàn thành
 
 **Deliverables:**
-- `notebooks/08_comparison.ipynb`
-- Bảng metrics xuất vào `reports/`
+- `README.md`, `requirements.txt`, `.gitignore`, `AGENTS.md`
+- Cấu trúc thư mục: `data/`, `notebooks/`, `src/`, `models/`, `reports/`, `docs/`
+
+---
+
+### Phase 1 — Preprocessing ISOT
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `01_preprocessing.ipynb`
+
+**Dataset:** ISOT Fake News Dataset  
+**Số mẫu sau xử lý:** 38,653 (REAL=21,196 / FAKE=17,457)  
+**Nguồn:** KaggleHub `rahulogoel/isot-fake-news-dataset`
+
+**Pipeline NLP** (trong `src/preprocessing.py`):
+1. Fix Reuters leakage → lowercase → strip URL/email/digits/punct → tokenize → lemmatize → remove stopwords (giữ negation words)
+
+**Output:**
+- `src/preprocessing.py` — `preprocess_text(text)`
+- `data/processed/preprocessed_isot_full.csv` (38,653 rows)
+
+---
+
+### Phase 2 — EDA ISOT
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `02_eda.ipynb`
+
+**Output:** Biểu đồ phân phối nhãn, độ dài text, word cloud, top n-grams trong `reports/`
+
+---
+
+### Phase 3 — TF-IDF Vectorization ISOT
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `03_vectorization.ipynb`
+
+**Settings chọn cuối:** `max_features=5000`, `ngram_range=(1,2)`  
+**Split:** 70/15/15, `stratify=y`, `random_state=42`
+
+**Kết quả splits:**
+
+| Split | Samples | Shape |
+|-------|---------|-------|
+| Train | 27,057 | (27057, 5000) |
+| Val | 5,798 | (5798, 5000) |
+| Test | 5,798 | (5798, 5000) |
+
+**Output:**
+- `data/X_train_tfidf.pkl`, `X_val_tfidf.pkl`, `X_test_tfidf.pkl`
+- `data/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
+- `models/tfidf_vectorizer.pkl`
+
+---
+
+### Phase 4 — Model Training ISOT
+**Trạng thái:** 🔄 3/4 xong — **RF còn thiếu**
+
+**Kết quả thực nghiệm (Validation Set ISOT):**
+
+| Model | Best Params | Val Accuracy | Val F1 (weighted) | Notebook | Status |
+|-------|-------------|:---:|:---:|----------|--------|
+| Naive Bayes | `alpha=0.01, fit_prior=True` | 0.9415 | 0.9416 | `04_naive_bayes.ipynb` | ✅ |
+| Logistic Regression | `C=20.0, penalty=l2, solver=saga, balanced` | ~0.99 | ~0.98 | `05_logistic_regression.ipynb` | ✅ |
+| SVM (LinearSVC) | `C=1, max_iter=2000` | 0.9869 | 0.9869 | `06_svm.ipynb` | ✅ ⚠️ |
+| Random Forest | — | — | — | `07_random_forest.ipynb` | ❌ Chưa có code |
+
+> ⚠️ **SVM notebook**: classification report in nhãn bị hoán vị (`FAKE(0)/REAL(1)` thay vì `REAL(0)/FAKE(1)`). Số liệu accuracy/F1 đúng, chỉ label display sai. Cần fix trước Phase 5.
+
+**RF cần làm:** `GridSearchCV` trên `n_estimators` ∈ [100, 200, 300], `max_depth` ∈ [None, 10, 20], `min_samples_split` ∈ [2, 5].
+
+---
+
+### Phase 5 — Model Comparison ISOT (Same-Dataset)
+**Trạng thái:** ⏳ Chờ Phase 4 hoàn thành (RF)  
+**Notebook:** `08_comparison.ipynb` *(có markdown, chưa có code)*
+
+**Nội dung:**
+- Load 4 models, predict trên **test set ISOT** (lần đầu tiên dùng test set)
+- Bảng: Accuracy / Precision / Recall / F1 (weighted) / Training time
+- Bar chart so sánh F1
 
 ---
 
 ### Phase 6 — Feature & Error Analysis
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**File kế hoạch:** `docs/plan/phase-6-analysis.md`
+**Trạng thái:** ⏳ Chờ Phase 5  
+**Notebook:** `09_feature_error_analysis.ipynb` *(có markdown, chưa có code)*
 
 **Nội dung:**
-- **Feature analysis:** Top 20 từ quan trọng nhất cho FAKE và REAL (LR coefficients hoặc NB log-probabilities), vẽ bar chart horizontal
-- **Error analysis:** 10-15 sample bị predict sai của model tốt nhất, nhận xét pattern (bài quá ngắn? ngôn ngữ trung lập?)
-
-**Deliverables:**
-- `notebooks/09_feature_error_analysis.ipynb`
+- Top 20 từ quan trọng FAKE vs REAL (LR coefficients)
+- 10–15 sample bị predict sai của model tốt nhất
 
 ---
 
-### Phase 7 — Dataset 2 Integration *(MỚI)*
-**Trạng thái:** 🔄 Đang thực hiện
+### Phase 7 — Dataset 2 Integration: WELFake
+**Trạng thái:** 🔄 7.1–7.3 ✅ Hoàn thành / 7.4 ⏳ Chưa bắt đầu  
+**Plan tổng thể:** `docs/plan/phase-07-dataset2-welfake.md`
 
-**File kế hoạch:** `docs/plan/phase-07-dataset2-welfake.md`
+#### Sub-phase 7.1 — Preprocessing WELFake
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `10_welfake_preprocessing.ipynb`  
+**Plan:** `docs/plan/phase-07.1-preprocessing.md`
 
-**Mục đích:** Đánh giá tính tổng quát (Generalization) của mô hình khi gặp dữ liệu lạ.
+**Dataset:** WELFake — ~72,134 rows (tải qua KaggleHub)  
+**Sau xử lý:** 72,074 rows (60 dropped — empty sau preprocessing)  
+**Label mapping:** WELFake gốc (0=FAKE, 1=REAL) → project (0=REAL, 1=FAKE)  
+**Output:** `data/processed/preprocessed_welfake_full.csv` (155 MB)
 
-**Dataset 2 đang cân nhắc:**
-- **LIAR Dataset** — câu tuyên bố chính trị có độ nhiễu cao, 6 nhãn (cần binary mapping)
-- **WELFake** — ~72K bài, gộp từ nhiều nguồn, gần với ISOT hơn về format
+| Nhãn | Sau xử lý |
+|------|-----------|
+| REAL (0) | 37,046 (51.4%) |
+| FAKE (1) | 35,028 (48.6%) |
 
-> **Khuyến nghị:** WELFake vì có format tiêu đề + nội dung tương đồng ISOT, dễ áp dụng cùng pipeline hơn.
+#### Sub-phase 7.2 — EDA WELFake
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `11_welfake_eda.ipynb`  
+**Plan:** `docs/plan/phase-07.2-eda.md`
 
-**Pipeline áp dụng lại:**
-1. Tự động tải WELFake bằng KaggleHub
-2. Chuẩn hóa nhãn nguồn về `REAL=0`, `FAKE=1` giống ISOT
-3. Áp dụng `preprocess_text()` từ `src/preprocessing.py`
-4. Tạo TF-IDF riêng cho WELFake (fit trên train set)
-5. Split 70/15/15 tương tự Phase 3
+**Key findings:**
+- Imbalance ratio: 1.058 (gần balanced hơn ISOT)
+- FAKE mean words: 330 / REAL mean words: 283 (FAKE dài hơn một chút)
+- Word cloud bỏ qua (wordcloud library chưa cài)
+- Output charts: `welfake_label_dist.png`, `welfake_text_length_by_label.png`, `welfake_top_ngrams.png`, `welfake_isot_comparison.png`
 
-**Deliverables:**
-- `notebooks/10_welfake_preprocessing.ipynb`
-- `notebooks/11_welfake_eda.ipynb`
-- `notebooks/12_welfake_vectorization.ipynb`
-- `data/processed/preprocessed_welfake_full.csv`
-- `data/welfake/X_train_tfidf.pkl`, `X_val_tfidf.pkl`, `X_test_tfidf.pkl`
+**So sánh ISOT vs WELFake:**
+
+| Metric | ISOT | WELFake |
+|--------|------|---------|
+| Tổng mẫu | 38,653 | 72,074 |
+| FAKE | 17,457 | 35,028 |
+| REAL | 21,196 | 37,046 |
+| Tỉ lệ FAKE | 45.2% | 48.6% |
+| Mean words | — | FAKE=330, REAL=283 |
+
+#### Sub-phase 7.3 — TF-IDF Vectorization WELFake
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `12_welfake_vectorization.ipynb`  
+**Plan:** `docs/plan/phase-07.3-vectorization.md`
+
+**Settings:** `max_features=5000`, `ngram_range=(1,2)` — nhất quán với ISOT  
+**Split:** 70/15/15, `stratify=y`, `random_state=42`
+
+| Split | Samples | Shape |
+|-------|---------|-------|
+| Train | 50,451 | (50451, 5000) |
+| Val | 10,811 | (10811, 5000) |
+| Test | 10,812 | (10812, 5000) |
+
+**Output:**
+- `models/tfidf_vectorizer_welfake.pkl` (184 KB)
+- `data/welfake/X_train_tfidf.pkl` (95 MB), `X_val_tfidf.pkl`, `X_test_tfidf.pkl`
 - `data/welfake/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
-- `models/tfidf_vectorizer_welfake.pkl`
+
+#### Sub-phase 7.4 — Model Training WELFake
+**Trạng thái:** ⏳ Chưa bắt đầu  
+**Notebook:** `13_welfake_model_training.ipynb` *(chưa tạo)*  
+**Plan:** `docs/plan/phase-07.4-model-training-welfake.md`
+
+**Mục đích:** Train 4 model trên WELFake train set để chuẩn bị cho Phase 8 (Cross-Dataset Evaluation).
+
+**Output dự kiến:**
+- `models/nb_welfake_model.pkl`
+- `models/lr_welfake_model.pkl`
+- `models/svm_welfake_model.pkl`
+- `models/rf_welfake_model.pkl`
 
 ---
 
-### Phase 8 — Cross-Dataset Evaluation *(MỚI)*
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**File kế hoạch:** `docs/plan/phase-8-cross-eval.md`
+### Phase 8 — Cross-Dataset Evaluation
+**Trạng thái:** ⏳ Chờ Phase 4 RF + Phase 7.4  
+**Notebook:** `14_cross_dataset_eval.ipynb` *(chưa tạo)*  
+**Plan:** `docs/plan/phase-08-cross-eval.md`
 
-**Thí nghiệm 2:** Cross-Dataset Evaluation
+**Hai thí nghiệm:**
 
-| Scenario | Train | Test |
-|----------|-------|------|
-| ISOT → D2 | ISOT | Dataset 2 |
-| D2 → ISOT | Dataset 2 | ISOT |
+| Scenario | Train Set | Test Set | Vectorizer dùng |
+|----------|-----------|----------|-----------------|
+| ISOT → WELFake | ISOT | WELFake test | ISOT vectorizer `.transform()` |
+| WELFake → ISOT | WELFake | ISOT test | WELFake vectorizer `.transform()` |
 
-**Lưu ý kỹ thuật:** Khi cross-test, cần dùng vectorizer của tập train (không re-fit). Apply `transform()` (không `fit_transform()`) trên test set đến từ dataset kia.
+**Kỹ thuật quan trọng:** Không `fit_transform()` lại — chỉ `.transform()` với vectorizer của tập train nguồn.
 
-**Nội dung phân tích:**
-- So sánh performance in-distribution vs out-of-distribution
-- Nhận xét sự sụt giảm F1 khi cross-test (domain shift)
-- Model nào robust nhất trước domain shift?
-
-**Deliverables:**
-- `notebooks/13_cross_dataset_eval.ipynb`
-- Bảng so sánh 2x2 (4 models × 2 scenarios)
+**Output:** Bảng 4 model × 2 scenarios, nhận xét domain shift.
 
 ---
 
 ### Phase 9 — Report & Documentation
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**File kế hoạch:** `docs/plan/phase-9-report.md`
+**Trạng thái:** ⏳ Chờ tất cả  
+**Plan:** `docs/plan/phase-09-report.md`
 
 **Cấu trúc báo cáo:**
-1. Tổng quan (Bối cảnh, Mục tiêu, Ý nghĩa)
-2. Phương pháp (Datasets, Preprocessing, TF-IDF, 4 thuật toán)
-3. Kết quả (Thí nghiệm 1 + Thí nghiệm 2 + Feature/Error analysis)
+1. Tổng quan — Bối cảnh, Mục tiêu, Ý nghĩa
+2. Phương pháp — Datasets, Preprocessing, TF-IDF, 4 thuật toán
+3. Kết quả — Thí nghiệm 1 (same-dataset) + Thí nghiệm 2 (cross-dataset) + Feature/Error analysis
 4. Kết luận & Hướng phát triển
 5. Hướng dẫn chạy hệ thống
 
-**Tech:** Python / NLTK / Scikit-learn / Matplotlib / Seaborn
+---
 
-**Deliverables:**
-- Báo cáo PDF hoàn chỉnh trong `reports/`
-- `README.md` cập nhật (thêm Dataset 2, thứ tự notebook mới)
+## Thứ tự Notebooks
+
+| # | Notebook | Input | Output |
+|---|----------|-------|--------|
+| 01 | `01_preprocessing.ipynb` | KaggleHub ISOT | `preprocessed_isot_full.csv` |
+| 02 | `02_eda.ipynb` | processed CSV | charts `reports/` |
+| 03 | `03_vectorization.ipynb` | processed CSV | ISOT TF-IDF splits |
+| 04 | `04_naive_bayes.ipynb` | ISOT splits | `naive_bayes_model.pkl` ✅ |
+| 05 | `05_logistic_regression.ipynb` | ISOT splits | `lr_model.pkl` ✅ |
+| 06 | `06_svm.ipynb` | ISOT splits | `svm_model.pkl` ✅ ⚠️ |
+| 07 | `07_random_forest.ipynb` | ISOT splits | `rf_model.pkl` ❌ |
+| 08 | `08_comparison.ipynb` | 4 models + ISOT test | metrics bảng ⏳ |
+| 09 | `09_feature_error_analysis.ipynb` | best model | feature charts ⏳ |
+| 10 | `10_welfake_preprocessing.ipynb` | KaggleHub WELFake | `preprocessed_welfake_full.csv` ✅ |
+| 11 | `11_welfake_eda.ipynb` | WELFake CSV | WELFake charts ✅ |
+| 12 | `12_welfake_vectorization.ipynb` | WELFake CSV | WELFake TF-IDF splits ✅ |
+| 13 | `13_welfake_model_training.ipynb` | WELFake splits | 4 WELFake models ⏳ |
+| 14 | `14_cross_dataset_eval.ipynb` | all models + both splits | cross-eval table ⏳ |
 
 ---
 
@@ -245,29 +277,31 @@ Mỗi model dùng chung flow: load TF-IDF splits → GridSearchCV (cv=5) → bes
 
 | Thành viên | Phase chính |
 |------------|-------------|
-| Hưng | Phase 1 (Preprocessing), Phase 4 (Naive Bayes), Phase 5+6 |
-| Xuân | Phase 2 (EDA), Phase 4 (Logistic Regression), Phase 5+6 |
-| Dung | Phase 3 (Vectorization), Phase 4 (SVM), Phase 7 |
-| Thủy | Phase 0 (Setup), Phase 4 (Random Forest), Phase 8, Phase 9 |
+| Hưng | Phase 1, Phase 4 (NB ✅), Phase 5+6 |
+| Xuân | Phase 2, Phase 4 (LR ✅), Phase 5+6 |
+| Dung | Phase 3, Phase 4 (SVM ✅), Phase 7 |
+| Thủy | Phase 0, Phase 4 (RF ❌), Phase 8, Phase 9 |
 
 ---
 
 ## Dependency Graph
 
 ```
-Phase 0 ──► Phase 1 ──► Phase 2
-                  └──► Phase 3 ──► Phase 4 ──► Phase 5 ──► Phase 6
-                                                              │
-                                         Phase 7 ──► Phase 8─┘
-                                                              │
-                                                         Phase 9
+Phase 0 → Phase 1 → Phase 2
+                 └→ Phase 3 → Phase 4 (NB✅ LR✅ SVM✅ RF❌)
+                                         ↓
+                                      Phase 5 → Phase 6
+                                                    ↓
+          Phase 7.1✅→7.2✅→7.3✅→7.4⏳ → Phase 8 → Phase 9
 ```
 
 ---
 
 ## Ghi chú kỹ thuật
 
-- **Data leakage prevention:** Vectorizer luôn được `fit` chỉ trên train set, dùng `transform` cho val/test.
-- **Reproducibility:** Set `random_state=42` cho tất cả model và split.
-- **Model persistence:** Dùng `joblib.dump` / `joblib.load`.
-- **Metrics chính:** F1-score (vì dataset có thể imbalanced); báo cáo đủ Accuracy, Precision, Recall, F1, Confusion Matrix.
+- **Label convention:** 0=REAL, 1=FAKE — áp dụng toàn bộ ISOT và WELFake
+- **Data leakage:** Vectorizer chỉ `fit` trên train set; `transform` cho val/test/cross-test
+- **Reproducibility:** `random_state=42` cho mọi model và split
+- **Model persistence:** `joblib.dump` / `joblib.load`
+- **Metrics chính:** F1-score (weighted); báo cáo đủ Accuracy, Precision, Recall, F1, Confusion Matrix
+- **WELFake lớn hơn ISOT:** Train 50K vs 27K → RF GridSearch trên WELFake sẽ rất chậm, cân nhắc giảm n_estimators grid
