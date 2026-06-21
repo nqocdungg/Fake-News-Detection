@@ -14,7 +14,7 @@ Support Vector Machine (SVM) là thuật toán học có giám sát tìm **siêu
 Với bài toán phân loại nhị phân (FAKE/REAL), SVM tìm hyperplane $\mathbf{w}^T \mathbf{x} + b = 0$ sao cho **margin** — khoảng cách từ hyperplane đến điểm dữ liệu gần nhất của mỗi lớp — là **lớn nhất có thể**.
 
 ```
-      FAKE (−1)   |         | REAL (+1)
+      REAL (class 0) |       | FAKE (class 1)
                   |         |
        ●   ● ●   |         |   ○  ○
          ●    ● ←|— margin →|→ ○   ○
@@ -88,7 +88,7 @@ Bài báo thô
   → preprocess_text()     [src/preprocessing.py]
   → TF-IDF transform()    [models/tfidf_vectorizer.pkl — CHỈ transform, không fit lại]
   → LinearSVC.predict()   [models/svm_model.pkl]
-  → FAKE (0) / REAL (1)
+  → REAL (0) / FAKE (1)
 ```
 
 ---
@@ -97,7 +97,7 @@ Bài báo thô
 
 ### 3.1 Dữ liệu
 
-| Split | Số mẫu | FAKE | REAL |
+| Split | Số mẫu | REAL | FAKE |
 |-------|--------|------|------|
 | Train | 27,057 | 14,837 (54.8%) | 12,220 (45.2%) |
 | Val   | 5,798  | 3,179  (54.8%) | 2,619  (45.2%) |
@@ -151,7 +151,7 @@ Do hạn chế tính toán (O(n²)), SVC RBF được đánh giá trên subsampl
 
 **Model:** LinearSVC, C=1, max_iter=2000, random_state=42
 
-| Metric | FAKE (0) | REAL (1) | Weighted Avg |
+| Metric | REAL (0) | FAKE (1) | Weighted Avg |
 |--------|:--------:|:--------:|:------------:|
 | Precision | 0.99 | 0.99 | 0.99 |
 | Recall | 0.99 | 0.98 | 0.99 |
@@ -164,14 +164,14 @@ Do hạn chế tính toán (O(n²)), SVC RBF được đánh giá trên subsampl
 
 ```
                   Predicted
-               FAKE    REAL
-Actual  FAKE  [3149]   [30]   ← 30 tin giả bị nhận nhầm là tin thật
-        REAL  [ 46]  [2573]   ← 46 tin thật bị nhận nhầm là tin giả
+               REAL    FAKE
+Actual  REAL  [3149]   [30]   ← 30 tin thật bị nhận nhầm là tin giả
+        FAKE  [ 46]  [2573]   ← 46 tin giả bị nhận nhầm là tin thật
 ```
 
 **Phân tích lỗi:**
-- **30 False Positives (FAKE → REAL):** Tin giả viết theo phong cách tin thật, sử dụng ngôn ngữ trung lập. Đây là dạng lỗi nguy hiểm hơn vì người đọc có thể tin vào tin giả.
-- **46 False Negatives (REAL → FAKE):** Tin thật có thể dùng ngôn ngữ cảm tính hoặc chứa từ ngữ thường xuất hiện trong tin giả.
+- **30 False Positives (REAL → FAKE):** Tin thật bị mô hình cảnh báo nhầm là tin giả.
+- **46 False Negatives (FAKE → REAL):** Tin giả bị nhận nhầm là tin thật. Đây là dạng lỗi nguy hiểm hơn vì người đọc có thể tin vào tin giả.
 
 ### 4.3 So sánh LinearSVC vs SVC RBF
 
@@ -194,7 +194,7 @@ TF-IDF với `max_features=5000` tạo ra vector rất thưa — hầu hết ent
 
 ### 5.2 Interpretability
 
-LinearSVC có vector trọng số $\mathbf{w} \in \mathbb{R}^{5000}$. Từ có $w_i > 0$ → hướng đến REAL; $w_i < 0$ → hướng đến FAKE. Đây là input cho Phase 6 (Feature Analysis).
+LinearSVC có vector trọng số $\mathbf{w} \in \mathbb{R}^{5000}$. Với `classes_ = [0, 1]`, từ có $w_i > 0$ → hướng đến FAKE (class 1); $w_i < 0$ → hướng đến REAL (class 0). Đây là input cho Phase 6 (Feature Analysis).
 
 ### 5.3 Hướng cải thiện
 

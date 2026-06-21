@@ -27,7 +27,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | **0** | **REAL** (tin thật) | ISOT & WELFake |
 | **1** | **FAKE** (tin giả) | ISOT & WELFake |
 
-> ⚠️ `notebooks/06_svm.ipynb` có lỗi hiển thị nhãn trong classification report (`FAKE(0)` / `REAL(1)` bị hoán vị). Model và kết quả số liệu vẫn đúng — chỉ nhãn in ra trên màn hình bị ngược. Cần sửa trước Phase 5.
+`notebooks/06_svm.ipynb` đã được đồng bộ theo quy ước `REAL=0`, `FAKE=1`, bao gồm classification report và confusion matrix.
 
 ---
 
@@ -117,10 +117,10 @@ Thu thập dữ liệu (ISOT + WELFake)
 |-------|-------------|:---:|:---:|----------|--------|
 | Naive Bayes | `alpha=0.01, fit_prior=True` | 0.9415 | 0.9416 | `04_naive_bayes.ipynb` | ✅ |
 | Logistic Regression | `C=20.0, penalty=l2, solver=saga, balanced` | ~0.99 | ~0.98 | `05_logistic_regression.ipynb` | ✅ |
-| SVM (LinearSVC) | `C=1, max_iter=2000` | 0.9869 | 0.9869 | `06_svm.ipynb` | ✅ ⚠️ |
+| SVM (LinearSVC) | `C=1, max_iter=2000` | 0.9869 | 0.9869 | `06_svm.ipynb` | ✅ |
 | Random Forest | — | — | — | `07_random_forest.ipynb` | ❌ Chưa có code |
 
-> ⚠️ **SVM notebook**: classification report in nhãn bị hoán vị (`FAKE(0)/REAL(1)` thay vì `REAL(0)/FAKE(1)`). Số liệu accuracy/F1 đúng, chỉ label display sai. Cần fix trước Phase 5.
+**SVM notebook:** nhãn hiển thị đã được sửa thành `REAL(0)/FAKE(1)`.
 
 **RF cần làm:** `GridSearchCV` trên `n_estimators` ∈ [100, 200, 300], `max_depth` ∈ [None, 10, 20], `min_samples_split` ∈ [2, 5].
 

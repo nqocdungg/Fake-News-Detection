@@ -24,10 +24,10 @@ Chọn ra model tốt hơn, lưu lại để sử dụng ở Phase 5 (comparison
 | `data/X_train_tfidf.pkl` | (27057, 5000) | Sparse matrix TF-IDF train set |
 | `data/X_val_tfidf.pkl` | (5798, 5000) | Sparse matrix TF-IDF val set |
 | `data/X_test_tfidf.pkl` | (5798, 5000) | Sparse matrix TF-IDF test set *(không dùng ở phase này)* |
-| `data/y_train.pkl` | (27057,) | Nhãn train: 0=FAKE, 1=REAL |
+| `data/y_train.pkl` | (27057,) | Nhãn train: 0=REAL, 1=FAKE |
 | `data/y_val.pkl` | (5798,) | Nhãn val |
 
-**Phân phối nhãn train:** FAKE=14,837 / REAL=12,220 (tỉ lệ ~55/45, gần balanced)
+**Phân phối nhãn train:** REAL=14,837 / FAKE=12,220 (tỉ lệ ~55/45, gần balanced)
 
 ---
 

@@ -2,6 +2,36 @@
 
 ---
 
+## [2026-06-21] Fix label convention + Kế hoạch Phase 7.4.1
+
+### Sửa lỗi label (REAL=0, FAKE=1)
+- Audit toàn bộ project xác nhận canonical mapping: `0=REAL`, `1=FAKE`
+- Kiểm tra artifacts:
+  - ISOT processed: 38,653 rows — REAL(0)=21,196, FAKE(1)=17,457
+  - WELFake processed: 72,074 rows — REAL(0)=37,046, FAKE(1)=35,028
+  - Tất cả `y_train/y_val/y_test.pkl` của hai dataset chỉ chứa `{0,1}` và giữ đúng phân phối
+  - `models/svm_model.pkl` có `classes_=[0,1]`
+- `notebooks/06_svm.ipynb` — 4 chỗ sai:
+  - Cell 4: `label_map` {0:'FAKE',1:'REAL'} → {0:'REAL',1:'FAKE'} + output text
+  - Cell 15: `target_names` ['FAKE (0)','REAL (1)'] → ['REAL (0)','FAKE (1)'] + output text
+  - Cell 16: `display_labels` ['FAKE','REAL'] → ['REAL','FAKE']
+  - Cell 16: Comment TN/FP/FN/TP hoán vị → đúng theo 0=REAL,1=FAKE
+- `notebooks/02_eda.ipynb` — 3 chỗ sai:
+  - Cell 17: `fake_text` dùng label==0 (REAL), `real_text` dùng label==1 (FAKE) → đã hoán vị đúng
+  - Cell 23: `X_fake` dùng label==0 → đã sửa thành label==1
+  - Cell 31: `common_bigrams_real` dùng label==1, `common_bigrams_fake` dùng label==0 → đã hoán vị + sửa comment
+  - Tiêu đề sentiment đã sửa thành `REAL (0) vs FAKE (1)`; output cũ của cell đã được xóa
+- Chạy lại `notebooks/06_svm.ipynb` và tái tạo `reports/svm_confusion_matrix.png` với thứ tự trục `REAL`, `FAKE`
+- Đồng bộ `docs/SVM-walkthrough.md`, `docs/plan/phase-04-model-training-SVM.md` và `docs/plan/master-plan.md`
+
+### Kế hoạch mới
+- `docs/plan/phase-07.4.1-svm-welfake.md` — 8 bước chi tiết train SVM (LinearSVC + SVC RBF subsample) trên WELFake 50K×5K
+  - Notebook: `13_welfake_svm.ipynb`
+  - Output: `models/svm_welfake_model.pkl`, 3 report charts
+  - Bao gồm bảng so sánh đầy đủ với Phase 4 SVM (ISOT)
+
+---
+
 ## [2026-06-21] Phase 7 — Cập nhật trạng thái & Lên kế hoạch Phase 7.4
 
 ### Hoàn thành
@@ -106,16 +136,16 @@
 | Val F1 (weighted) | **0.9869** |
 | Val F1 (macro) | 0.9868 |
 | Precision FAKE | 0.99 |
-| Recall FAKE | 0.99 |
+| Recall FAKE | 0.98 |
 | Precision REAL | 0.99 |
-| Recall REAL | 0.98 |
+| Recall REAL | 0.99 |
 | Training time | ~0.62s |
 
 **Confusion Matrix (Validation Set):**
-- TN (FAKE→FAKE): 3,149 ✅
-- FP (FAKE→REAL): 30 ← tin giả bị nhận nhầm
-- FN (REAL→FAKE): 46 ← tin thật bị nhận nhầm
-- TP (REAL→REAL): 2,573 ✅
+- TN (REAL→REAL): 3,149 ✅
+- FP (REAL→FAKE): 30 ← tin thật bị nhận nhầm là giả
+- FN (FAKE→REAL): 46 ← tin giả bị nhận nhầm là thật
+- TP (FAKE→FAKE): 2,573 ✅
 
 **SVC RBF (subsample 400 mẫu, best: C=10, gamma=scale):** F1 ≈ 0.9323 — không scalable, không dùng cho production.
 
