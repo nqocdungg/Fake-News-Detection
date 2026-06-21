@@ -1,215 +1,182 @@
-# Phase 7.4 — Model Training: WELFake Dataset
+# Phase 7.4 — Model Training trên WELFake
 
-> **Trạng thái tổng thể:** ⏳ Chưa bắt đầu  
-> **Notebook output:** `notebooks/13_welfake_model_training.ipynb`  
+> **Trạng thái tổng thể:** 🔄 Đang thực hiện — 1/4 model hoàn thành
 > **Cập nhật:** 2026-06-21
 
 ---
 
 ## Mục tiêu
 
-Train cùng 4 thuật toán ML như ISOT (Naive Bayes, Logistic Regression, LinearSVC, Random Forest) nhưng trên **WELFake TF-IDF splits** đã có từ Phase 7.3.
+Train cùng bốn thuật toán đã dùng trên ISOT bằng WELFake TF-IDF splits:
 
-Kết quả của phase này phục vụ hai mục đích:
-1. So sánh hiệu năng trong cùng dataset WELFake (baseline cho Phase 8)
-2. Chuẩn bị model để đánh giá cross-dataset (Phase 8): WELFake models → dự đoán ISOT test
+1. LinearSVC
+2. Naive Bayes
+3. Logistic Regression
+4. Random Forest
+
+Phase này chỉ dùng train/validation. Test set được giữ nguyên cho Phase 8.
 
 ---
 
-## Dữ liệu đầu vào
+## Cấu trúc triển khai
+
+Do mỗi thuật toán có grid, thời gian chạy và phân tích riêng, Phase 7.4 được tách thành notebook theo model:
+
+| Sub-phase | Model | Notebook | Trạng thái |
+|-----------|-------|----------|------------|
+| 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | ✅ Hoàn thành |
+| 7.4.2 | Multinomial Naive Bayes | `14_welfake_naive_bayes.ipynb` | ⏳ Chưa tạo |
+| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ⏳ Chưa tạo |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ⏳ Chưa tạo |
+
+Plan cũ dùng một notebook `13_welfake_model_training.ipynb` cho cả bốn model không còn phù hợp với triển khai thực tế và được thay bằng cấu trúc trên.
+
+---
+
+## Dữ liệu đầu vào dùng chung
 
 | File | Shape | Mô tả |
-|------|-------|--------|
-| `data/welfake/X_train_tfidf.pkl` | (50451, 5000) | Sparse matrix TF-IDF train WELFake |
-| `data/welfake/X_val_tfidf.pkl` | (10811, 5000) | Sparse matrix TF-IDF val WELFake |
-| `data/welfake/X_test_tfidf.pkl` | (10812, 5000) | *(Không dùng ở phase này — reserved Phase 8)* |
-| `data/welfake/y_train.pkl` | (50451,) | Nhãn train: 0=REAL, 1=FAKE |
-| `data/welfake/y_val.pkl` | (10811,) | Nhãn val |
+|------|-------|-------|
+| `data/welfake/X_train_tfidf.pkl` | (50,451, 5,000) | Train sparse CSR |
+| `data/welfake/X_val_tfidf.pkl` | (10,811, 5,000) | Validation sparse CSR |
+| `data/welfake/y_train.pkl` | (50,451,) | `0=REAL`, `1=FAKE` |
+| `data/welfake/y_val.pkl` | (10,811,) | `0=REAL`, `1=FAKE` |
 
-**Phân phối nhãn train (ước tính):**  
-WELFake tổng: REAL=37,046 (51.4%) / FAKE=35,028 (48.6%) → gần balanced → không cần `class_weight` để xử lý imbalance như ISOT.
+Không load `X_test_tfidf.pkl` hoặc `y_test.pkl` trong các notebook 7.4.x.
 
-> **Quy ước nhãn:** 0=REAL, 1=FAKE — nhất quán toàn dự án.
+Phân phối train:
 
----
-
-## Hyperparameter Grids
-
-Giữ **nguyên các grid** đã dùng cho ISOT để so sánh công bằng. Điều chỉnh nhỏ ở RF để tránh timeout trên 50K samples.
-
-| Model | Hyperparameter Grid |
-|-------|---------------------|
-| Naive Bayes | `alpha` ∈ [0.001, 0.01, 0.1, 1.0]; `fit_prior` ∈ [True, False] |
-| Logistic Regression | `C` ∈ [0.01, 0.1, 1, 5, 10, 20]; `penalty` ∈ ['l1','l2']; `solver` ∈ ['liblinear','saga']; `class_weight` ∈ [None,'balanced'] |
-| LinearSVC | `C` ∈ [0.01, 0.1, 1, 10]; `max_iter=2000` (fixed) |
-| Random Forest | `n_estimators` ∈ [**100, 200**]; `max_depth` ∈ [None, 10, 20]; `min_samples_split` ∈ [2, 5] |
-
-**GridSearchCV config toàn bộ:** `cv=5`, `scoring='f1_weighted'`, `n_jobs=-1`
+| Nhãn | Số mẫu | Tỉ lệ |
+|------|-------:|------:|
+| REAL (0) | 25,932 | 51.4% |
+| FAKE (1) | 24,519 | 48.6% |
 
 ---
 
-## Các bước thực hiện
+## Cấu hình và trạng thái từng model
 
----
+### 7.4.1 — LinearSVC ✅
 
-### Bước 1 — Import & Setup
-**Trạng thái:** ⏳
+Plan chi tiết: `phase-07.4.1-svm-welfake.md`.
 
-**Làm gì:** Import thư viện, set `random_state=42`. In phiên bản scikit-learn và numpy để ghi lại reproducibility.
+| Thuộc tính | Kết quả |
+|------------|--------:|
+| Grid C | [0.01, 0.1, 1, 10] |
+| Best C | 1 |
+| CV F1 weighted | 0.9441 |
+| Val Accuracy | 0.9451 |
+| Val F1 weighted | 0.9451 |
+| Model | `models/svm_welfake_model.pkl` |
 
-**Lý do:** Nhất quán với mọi notebook trước. `random_state=42` bắt buộc cho mọi model và split trong toàn dự án.
+### 7.4.2 — Naive Bayes ⏳
 
----
-
-### Bước 2 — Load dữ liệu
-**Trạng thái:** ⏳
-
-**Làm gì:** Dùng `joblib.load()` load 4 file: `X_train`, `X_val`, `y_train`, `y_val` từ `data/welfake/`. In shape và phân phối nhãn (`value_counts()`) để xác nhận đúng file WELFake.
+Notebook dự kiến: `14_welfake_naive_bayes.ipynb`.
 
 ```python
-import joblib
-X_train = joblib.load('data/welfake/X_train_tfidf.pkl')
-X_val   = joblib.load('data/welfake/X_val_tfidf.pkl')
-y_train = joblib.load('data/welfake/y_train.pkl')
-y_val   = joblib.load('data/welfake/y_val.pkl')
+param_grid = {
+    "alpha": [0.01, 0.1, 0.5, 1.0, 2.0],
+    "fit_prior": [True, False],
+}
 ```
 
-**Lý do:** Phân biệt rõ với ISOT splits (lưu ở `data/`). **Không load X_test** — dành cho Phase 8.
+- `GridSearchCV(cv=5, scoring="f1_weighted")`
+- Output: `models/nb_welfake_model.pkl`
+- Báo cáo Accuracy, Precision, Recall, F1 weighted/macro và confusion matrix trên validation.
 
----
+### 7.4.3 — Logistic Regression ⏳
 
-### Bước 3 — Naive Bayes: GridSearchCV
-**Trạng thái:** ⏳
+Notebook dự kiến: `15_welfake_logistic_regression.ipynb`.
 
-**Làm gì:**
-1. Baseline `MultinomialNB()` (default alpha=1.0), ghi F1 val baseline.
-2. GridSearchCV trên `alpha` ∈ [0.001, 0.01, 0.1, 1.0] × `fit_prior` ∈ [True, False] → 8 combos × 5 folds = 40 fits.
-3. Ghi lại best params, CV F1, thời gian.
-
-**Lý do:** NB nhanh nhất — chạy trước để có kết quả tham chiếu sớm. `alpha` kiểm soát Laplace smoothing; trên WELFake (đa nguồn, vocab phong phú hơn ISOT) `alpha=0.01` hoặc `alpha=0.1` có thể tối ưu hơn `alpha=1.0`.
-
-**Ước tính thời gian:** < 2 phút.
-
----
-
-### Bước 4 — Logistic Regression: GridSearchCV
-**Trạng thái:** ⏳
-
-**Làm gì:**
-1. Baseline `LogisticRegression(C=1.0, max_iter=500)`, ghi F1 val.
-2. GridSearchCV theo grid ở bảng trên. Lưu ý: `penalty='l1'` không hợp lệ với `solver='saga'`+`class_weight='balanced'` trong một số config — scikit-learn sẽ tự bỏ các combo không hợp lệ nếu dùng `ParameterGrid` đúng cách; hoặc dùng `error_score=np.nan` để bỏ qua. **Khuyến nghị:** dùng hai GridSearch riêng:
-   - Grid A: `solver=liblinear`, `penalty=['l1','l2']`, `C=[...]`, `class_weight=[None,'balanced']`
-   - Grid B: `solver=saga`, `penalty=['l1','l2']`, `C=[...]`, `class_weight=[None,'balanced']`, `max_iter=500`
-3. Vẽ đồ thị F1 theo C với từng penalty.
-
-**Lý do:** WELFake gần balanced nên `class_weight='balanced'` ít cần thiết hơn ISOT, nhưng vẫn nên thử để xác nhận. `saga` hỗ trợ cả `l1` và `l2`, tốt cho dataset lớn.
-
-**Ước tính thời gian:** 15–40 phút (70 combos × 5 folds × 50K samples, giảm với `n_jobs=-1`).
-
----
-
-### Bước 5 — SVM (LinearSVC): GridSearchCV
-**Trạng thái:** ⏳
-
-**Làm gì:**
-1. Baseline `LinearSVC(C=1, max_iter=2000)`, ghi F1 val.
-2. GridSearchCV: `C` ∈ [0.01, 0.1, 1, 10], `cv=5` → 20 fits.
-3. Vẽ đồ thị F1 theo C (giống bước 4 của `06_svm.ipynb`).
-
-**Lý do:** LinearSVC O(n·d) → phù hợp với 50K×5K sparse. Không thử SVC RBF trên WELFake vì đã xác nhận từ Phase 4 ISOT rằng RBF không scalable.
-
-**Ước tính thời gian:** < 3 phút.
-
----
-
-### Bước 6 — Random Forest: GridSearchCV
-**Trạng thái:** ⏳
-
-> ⚠️ **CẢNH BÁO HIỆU NĂNG:** RF GridSearch trên 50K samples rất chậm.  
-> `n_estimators=[100,200]` × `max_depth=[None,10,20]` × `min_samples_split=[2,5]` = 12 combos × 5 folds = **60 fits**.  
-> Với `n_jobs=-1`, ước tính **30–90 phút** tùy CPU.  
-> **Cần chạy notebook qua đêm hoặc trên máy đủ mạnh.**
-
-**Làm gì:**
-1. Baseline `RandomForestClassifier(n_estimators=100, random_state=42)`, ghi F1 val và thời gian.
-2. GridSearchCV theo grid (2×3×2 = 12 combos).
-3. In best params, CV F1, val F1.
-
-**Kỹ thuật giảm thời gian (tùy chọn):**
-- Giảm grid xuống: `n_estimators=[100]`, `max_depth=[None, 10]`, `min_samples_split=[2]` → 2 combos × 5 = 10 fits nếu máy quá chậm.
-- Ghi rõ trong notebook nếu đã rút gọn grid.
-
-**Lý do:** RF thường cho kết quả tốt nhưng chậm. Vẫn cần train để hoàn thiện bộ 4 model cho Phase 8.
-
----
-
-### Bước 7 — Tổng hợp kết quả trên Validation Set
-**Trạng thái:** ⏳
-
-**Làm gì:**
-- In bảng tổng hợp 4 model:
-
-| Model | Best Params | Val Accuracy | Val F1 (weighted) | Train time |
-|-------|-------------|:---:|:---:|:---:|
-| Naive Bayes | ... | ... | ... | ... |
-| Logistic Regression | ... | ... | ... | ... |
-| LinearSVC | ... | ... | ... | ... |
-| Random Forest | ... | ... | ... | ... |
-
-- Vẽ bar chart F1 của 4 model (horizontal bar chart).
-- Lưu chart ra `reports/welfake_model_comparison_val.png`.
-
-**Lý do:** Cung cấp cái nhìn tổng quan trước khi Phase 8 dùng test set. Validation set đã được dùng để select hyperparams nên không thể dùng làm kết quả final — đó là lý do Phase 8 dùng test set.
-
----
-
-### Bước 8 — Lưu 4 models
-**Trạng thái:** ⏳
-
-**Làm gì:** Lưu từng model bằng `joblib.dump()`:
+Grid phải dùng các tổ hợp solver/penalty hợp lệ. `saga` hỗ trợ `l1` và `l2`; `liblinear` cũng hỗ trợ binary `l1/l2`.
 
 ```python
-joblib.dump(best_nb,  'models/nb_welfake_model.pkl')
-joblib.dump(best_lr,  'models/lr_welfake_model.pkl')
-joblib.dump(best_svm, 'models/svm_welfake_model.pkl')
-joblib.dump(best_rf,  'models/rf_welfake_model.pkl')
+param_grid = [
+    {
+        "solver": ["liblinear"],
+        "penalty": ["l1", "l2"],
+        "C": [0.1, 1, 5, 10, 20],
+        "class_weight": [None, "balanced"],
+        "max_iter": [500],
+    },
+    {
+        "solver": ["saga"],
+        "penalty": ["l1", "l2"],
+        "C": [0.1, 1, 5, 10, 20],
+        "class_weight": [None, "balanced"],
+        "max_iter": [500],
+    },
+]
 ```
 
-In tên file và kích thước. In summary cuối: 4 model đã sẵn sàng cho Phase 8.
+- Output: `models/lr_welfake_model.pkl`
+- Ghi convergence warnings nếu có; không im lặng coi model chưa hội tụ là hợp lệ.
 
-**Lý do:** Phase 8 sẽ load các file này cùng với `tfidf_vectorizer_welfake.pkl` để predict trên ISOT test set. Đặt tên rõ ràng `_welfake_` tránh nhầm với ISOT models.
+### 7.4.4 — Random Forest ⏳
 
----
+Notebook dự kiến: `16_welfake_random_forest.ipynb`.
 
-## Output Files
+```python
+param_grid = {
+    "n_estimators": [100, 200],
+    "max_depth": [None, 10, 20],
+    "min_samples_split": [2, 5],
+}
+```
 
-| File | Mô tả |
-|------|-------|
-| `models/nb_welfake_model.pkl` | MultinomialNB tối ưu trên WELFake |
-| `models/lr_welfake_model.pkl` | LogisticRegression tối ưu trên WELFake |
-| `models/svm_welfake_model.pkl` | LinearSVC tối ưu trên WELFake |
-| `models/rf_welfake_model.pkl` | RandomForestClassifier tối ưu trên WELFake |
-| `reports/welfake_model_comparison_val.png` | Bar chart F1 val 4 models |
-
----
-
-## Kết quả kỳ vọng
-
-WELFake gần balanced hơn ISOT và lớn hơn (50K vs 27K train) → F1 dự kiến cao, nhưng cũng có thể thấp hơn nếu WELFake phức tạp hơn (nhiều nguồn, nhiều domain hơn).
-
-| Model | Val F1 (dự kiến) | Ghi chú |
-|-------|:---:|---------|
-| Naive Bayes | ~0.93–0.96 | Hiệu quả với sparse TF-IDF |
-| Logistic Regression | ~0.97–0.99 | Thường là top performer |
-| LinearSVC | ~0.97–0.99 | Comparable với LR |
-| Random Forest | ~0.95–0.98 | Chậm nhưng robust |
+- 12 cấu hình × 5 folds = 60 fits.
+- Có thể rút gọn grid nếu runtime không phù hợp, nhưng phải ghi rõ thay đổi trong notebook và CHANGELOG.
+- Output: `models/rf_welfake_model.pkl`.
 
 ---
 
-## Lưu ý quan trọng
+## Quy trình bắt buộc cho mỗi notebook
 
-- **KHÔNG** dùng `X_test` ở phase này — test set reserved cho Phase 8
-- **KHÔNG** dùng vectorizer ISOT để transform WELFake data — đã có `tfidf_vectorizer_welfake.pkl` riêng
-- **KHÔNG** `fit_transform` lại vectorizer — data đã được transform từ Phase 7.3
-- Nếu RF quá chậm, ghi rõ thời gian và có thể rút gọn grid (document lại)
-- Phase 8 sẽ là lần đầu tiên dùng `X_test_tfidf.pkl` của cả ISOT và WELFake
+1. Load đúng `data/welfake/`.
+2. Xác minh shape và nhãn `{0,1}`.
+3. Train baseline.
+4. GridSearchCV trên train set.
+5. Chọn best estimator bằng CV.
+6. Đánh giá một lần trên validation set.
+7. Báo cáo:
+   - Accuracy
+   - Precision/Recall/F1 per class
+   - F1 weighted và macro
+   - Confusion matrix
+   - Training/GridSearch time
+8. Lưu model bằng `joblib.dump`.
+9. Không đọc hoặc predict test set.
+
+---
+
+## Tổng hợp validation
+
+| Model | Best Params | CV F1 | Val Accuracy | Val F1 weighted | Trạng thái |
+|-------|-------------|:-----:|:------------:|:---------------:|------------|
+| LinearSVC | `C=1` | 0.9441 | 0.9451 | 0.9451 | ✅ |
+| Naive Bayes | — | — | — | — | ⏳ |
+| Logistic Regression | — | — | — | — | ⏳ |
+| Random Forest | — | — | — | — | ⏳ |
+
+Không chọn “model tốt nhất cuối cùng” bằng test set trong Phase 7.4. Bảng này chỉ là validation summary.
+
+---
+
+## Output
+
+```text
+models/
+├── svm_welfake_model.pkl   ✅
+├── nb_welfake_model.pkl    ⏳
+├── lr_welfake_model.pkl    ⏳
+└── rf_welfake_model.pkl    ⏳
+```
+
+Phase 7.4 hoàn thành khi đủ bốn model, đủ validation metrics và CHANGELOG đã ghi best params/F1 cho từng model.
+
+---
+
+## Lưu ý cho Phase 8
+
+- WELFake model chỉ nhận vector từ `tfidf_vectorizer_welfake.pkl`.
+- Khi WELFake → ISOT, phải reconstruct đúng ISOT test raw texts rồi gọi `tfidf_vectorizer_welfake.transform()`.
+- Không được dùng sẵn `data/X_test_tfidf.pkl` của ISOT cho WELFake model vì matrix đó thuộc vocabulary ISOT.

@@ -2,6 +2,35 @@
 
 ---
 
+## [2026-06-21] Phase 7.4.1 — SVM WELFake hoàn thành
+
+### Hoàn thành
+- Chạy đầy đủ `notebooks/13_welfake_svm.ipynb`
+- GridSearchCV LinearSVC: `C=[0.01,0.1,1,10]`, `cv=5`, `scoring=f1_weighted`
+- Lưu `models/svm_welfake_model.pkl`
+- Tạo:
+  - `reports/welfake_svm_c_tuning.png`
+  - `reports/welfake_svm_kernel_comparison.png`
+  - `reports/welfake_svm_confusion_matrix.png`
+- Cập nhật master plan, plan tổng Phase 7, Phase 7.4 và Phase 7.4.1 theo triển khai thực tế
+
+### Kết quả
+- Best params: `C=1`, `max_iter=2000`, `random_state=42`
+- Best CV F1 weighted: **0.9441**
+- Validation Accuracy: **0.9451**
+- Validation F1 weighted: **0.9451**
+- Validation F1 macro: **0.9451**
+- Lần chạy cuối: baseline **2.34s**, GridSearchCV **21.0s**
+- Confusion matrix: `[[5302,255],[338,4916]]`
+- SVC RBF subsample 400 tốt nhất: `C=10`, `gamma=scale`, F1 weighted **0.8424**
+
+### Ghi chú
+- Không sử dụng WELFake test set.
+- Sửa giải thích `gamma='auto'`: gamma quá nhỏ làm kernel gần 1 và giảm khả năng phân biệt, không phải kernel gần 0.
+- Cảnh báo cleanup `joblib resource_tracker` trên Windows không làm notebook thất bại; model và metrics đã được kiểm chứng độc lập.
+
+---
+
 ## [2026-06-21] Fix label convention + Kế hoạch Phase 7.4.1
 
 ### Sửa lỗi label (REAL=0, FAKE=1)
@@ -39,9 +68,10 @@
 - `docs/plan/phase-07.4-model-training-welfake.md` — kế hoạch 8 bước chi tiết cho training 4 model trên WELFake
 
 ### Kế hoạch Phase 7.4
-- **Notebook:** `notebooks/13_welfake_model_training.ipynb` (chưa tạo)
+- Kế hoạch một notebook `13_welfake_model_training.ipynb` đã được thay bằng notebook riêng theo model
+- `13_welfake_svm.ipynb` ✅; `14_welfake_naive_bayes.ipynb`, `15_welfake_logistic_regression.ipynb`, `16_welfake_random_forest.ipynb` ⏳
 - **Input:** `data/welfake/X_train_tfidf.pkl` (50451×5000), `X_val_tfidf.pkl` (10811×5000)
-- **Output:** `models/{nb,lr,svm,rf}_welfake_model.pkl` + `reports/welfake_model_comparison_val.png`
+- **Output:** `models/{nb,lr,svm,rf}_welfake_model.pkl`
 - **Lưu ý RF:** GridSearch 60 fits trên 50K samples ước tính 30–90 phút; cần chạy qua đêm
 
 ### Trạng thái hiện tại (2026-06-21)

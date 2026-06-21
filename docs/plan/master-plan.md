@@ -42,8 +42,8 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 4 | Model Training ISOT (4 thuật toán) | 🔄 3/4 xong (RF còn thiếu) |
 | 5 | Model Comparison ISOT (same-dataset) | ⏳ Chờ Phase 4 hoàn thành |
 | 6 | Feature & Error Analysis | ⏳ Chờ Phase 5 |
-| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 xong, 7.4 chưa bắt đầu |
-| 8 | Cross-Dataset Evaluation | ⏳ Chờ Phase 4 + 7.4 |
+| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 + SVM xong; 3 model còn thiếu |
+| 8 | Cross-Dataset Evaluation | ⏳ Chờ Phase 4 RF + Phase 7.4 đủ 4 model |
 | 9 | Report & Documentation | ⏳ Chờ tất cả |
 
 ---
@@ -104,7 +104,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 **Output:**
 - `data/X_train_tfidf.pkl`, `X_val_tfidf.pkl`, `X_test_tfidf.pkl`
 - `data/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
-- `models/tfidf_vectorizer.pkl`
+- `models/tfidf_vectorizer.pkl` — ⚠️ hiện chưa có trong workspace, cần chạy lại/lưu từ notebook 03 trước Phase 8
 
 ---
 
@@ -148,7 +148,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 7 — Dataset 2 Integration: WELFake
-**Trạng thái:** 🔄 7.1–7.3 ✅ Hoàn thành / 7.4 ⏳ Chưa bắt đầu  
+**Trạng thái:** 🔄 7.1–7.3 ✅ / 7.4 hoàn thành 1/4 model
 **Plan tổng thể:** `docs/plan/phase-07-dataset2-welfake.md`
 
 #### Sub-phase 7.1 — Preprocessing WELFake
@@ -207,23 +207,35 @@ Thu thập dữ liệu (ISOT + WELFake)
 - `data/welfake/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
 
 #### Sub-phase 7.4 — Model Training WELFake
-**Trạng thái:** ⏳ Chưa bắt đầu  
-**Notebook:** `13_welfake_model_training.ipynb` *(chưa tạo)*  
+**Trạng thái:** 🔄 Đang thực hiện — SVM hoàn thành, NB/LR/RF còn thiếu
 **Plan:** `docs/plan/phase-07.4-model-training-welfake.md`
 
-**Mục đích:** Train 4 model trên WELFake train set để chuẩn bị cho Phase 8 (Cross-Dataset Evaluation).
+| Sub-phase | Model | Notebook | Val F1 weighted | Trạng thái |
+|-----------|-------|----------|:---------------:|------------|
+| 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | **0.9451** | ✅ |
+| 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | — | ⏳ |
+| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | — | ⏳ |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | — | ⏳ |
 
-**Output dự kiến:**
+**SVM WELFake đã xác minh:**
+- Best `C=1`
+- CV F1 weighted = `0.9441`
+- Validation Accuracy/F1 weighted = `0.9451`
+- Confusion matrix = `[[5302,255],[338,4916]]`
+- Model: `models/svm_welfake_model.pkl`
+
+**Output Phase 7.4:**
 - `models/nb_welfake_model.pkl`
 - `models/lr_welfake_model.pkl`
-- `models/svm_welfake_model.pkl`
+- `models/svm_welfake_model.pkl` ✅
 - `models/rf_welfake_model.pkl`
 
 ---
 
 ### Phase 8 — Cross-Dataset Evaluation
-**Trạng thái:** ⏳ Chờ Phase 4 RF + Phase 7.4  
-**Notebook:** `14_cross_dataset_eval.ipynb` *(chưa tạo)*  
+**Trạng thái:** ⏳ Chờ Phase 4 RF + Phase 7.4.2–7.4.4
+
+**Notebook:** `17_cross_dataset_eval.ipynb` *(chưa tạo)*
 **Plan:** `docs/plan/phase-08-cross-eval.md`
 
 **Hai thí nghiệm:**
@@ -236,6 +248,11 @@ Thu thập dữ liệu (ISOT + WELFake)
 **Kỹ thuật quan trọng:** Không `fit_transform()` lại — chỉ `.transform()` với vectorizer của tập train nguồn.
 
 **Output:** Bảng 4 model × 2 scenarios, nhận xét domain shift.
+
+**Prerequisites cần xử lý trước khi bắt đầu:**
+- Tạo lại `models/tfidf_vectorizer.pkl` của ISOT vì artifact này hiện chưa có trong workspace.
+- Reconstruct chính xác raw text test split của ISOT và WELFake bằng cùng quy trình split (`70/15/15`, stratify, `random_state=42`) hoặc lưu text split riêng.
+- Không đưa matrix `X_test_tfidf.pkl` của dataset A trực tiếp vào model của dataset B vì hai matrix thuộc hai vocabulary khác nhau.
 
 ---
 
@@ -261,15 +278,18 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 03 | `03_vectorization.ipynb` | processed CSV | ISOT TF-IDF splits |
 | 04 | `04_naive_bayes.ipynb` | ISOT splits | `naive_bayes_model.pkl` ✅ |
 | 05 | `05_logistic_regression.ipynb` | ISOT splits | `lr_model.pkl` ✅ |
-| 06 | `06_svm.ipynb` | ISOT splits | `svm_model.pkl` ✅ ⚠️ |
+| 06 | `06_svm.ipynb` | ISOT splits | `svm_model.pkl` ✅ |
 | 07 | `07_random_forest.ipynb` | ISOT splits | `rf_model.pkl` ❌ |
 | 08 | `08_comparison.ipynb` | 4 models + ISOT test | metrics bảng ⏳ |
 | 09 | `09_feature_error_analysis.ipynb` | best model | feature charts ⏳ |
 | 10 | `10_welfake_preprocessing.ipynb` | KaggleHub WELFake | `preprocessed_welfake_full.csv` ✅ |
 | 11 | `11_welfake_eda.ipynb` | WELFake CSV | WELFake charts ✅ |
 | 12 | `12_welfake_vectorization.ipynb` | WELFake CSV | WELFake TF-IDF splits ✅ |
-| 13 | `13_welfake_model_training.ipynb` | WELFake splits | 4 WELFake models ⏳ |
-| 14 | `14_cross_dataset_eval.ipynb` | all models + both splits | cross-eval table ⏳ |
+| 13 | `13_welfake_svm.ipynb` | WELFake train/val | `svm_welfake_model.pkl` ✅ |
+| 14 | `14_welfake_naive_bayes.ipynb` | WELFake train/val | `nb_welfake_model.pkl` ⏳ |
+| 15 | `15_welfake_logistic_regression.ipynb` | WELFake train/val | `lr_welfake_model.pkl` ⏳ |
+| 16 | `16_welfake_random_forest.ipynb` | WELFake train/val | `rf_welfake_model.pkl` ⏳ |
+| 17 | `17_cross_dataset_eval.ipynb` | all models + exact raw test splits | cross-eval table ⏳ |
 
 ---
 
@@ -292,7 +312,7 @@ Phase 0 → Phase 1 → Phase 2
                                          ↓
                                       Phase 5 → Phase 6
                                                     ↓
-          Phase 7.1✅→7.2✅→7.3✅→7.4⏳ → Phase 8 → Phase 9
+          Phase 7.1✅→7.2✅→7.3✅→7.4 (SVM✅, NB/LR/RF⏳) → Phase 8 → Phase 9
 ```
 
 ---

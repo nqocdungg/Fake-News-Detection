@@ -85,6 +85,11 @@ jupyter notebook
 10. `notebooks/10_welfake_preprocessing.ipynb`: tai WELFake bang KaggleHub, chuan hoa nhan va tien xu ly.
 11. `notebooks/11_welfake_eda.ipynb`: EDA WELFake va so sanh voi ISOT.
 12. `notebooks/12_welfake_vectorization.ipynb`: chia 70/15/15 va tao TF-IDF rieng cho WELFake.
+13. `notebooks/13_welfake_svm.ipynb`: train va tune LinearSVC tren WELFake.
+14. `notebooks/14_welfake_naive_bayes.ipynb`: train Naive Bayes WELFake (chua tao).
+15. `notebooks/15_welfake_logistic_regression.ipynb`: train Logistic Regression WELFake (chua tao).
+16. `notebooks/16_welfake_random_forest.ipynb`: train Random Forest WELFake (chua tao).
+17. `notebooks/17_cross_dataset_eval.ipynb`: danh gia cross-dataset (chua tao).
 
 ## Kết quả đầu ra
 
