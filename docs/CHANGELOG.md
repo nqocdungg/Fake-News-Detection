@@ -2,6 +2,26 @@
 
 ---
 
+## [2026-06-21] Phase 7 — Cập nhật trạng thái & Lên kế hoạch Phase 7.4
+
+### Hoàn thành
+- `docs/plan/master-plan.md` — cập nhật toàn diện: Phase 4 results thực tế (NB✅ LR✅ SVM✅ RF❌), Phase 7.1–7.3 ✅ với số liệu thực tế, thêm Phase 7.4 + notebook 14
+- `docs/plan/phase-07.4-model-training-welfake.md` — kế hoạch 8 bước chi tiết cho training 4 model trên WELFake
+
+### Kế hoạch Phase 7.4
+- **Notebook:** `notebooks/13_welfake_model_training.ipynb` (chưa tạo)
+- **Input:** `data/welfake/X_train_tfidf.pkl` (50451×5000), `X_val_tfidf.pkl` (10811×5000)
+- **Output:** `models/{nb,lr,svm,rf}_welfake_model.pkl` + `reports/welfake_model_comparison_val.png`
+- **Lưu ý RF:** GridSearch 60 fits trên 50K samples ước tính 30–90 phút; cần chạy qua đêm
+
+### Trạng thái hiện tại (2026-06-21)
+- Phase 7.1 (preprocessing) ✅ — 72,074 rows, REAL=37,046/FAKE=35,028
+- Phase 7.2 (EDA) ✅ — 4 charts sinh ra, FAKE mean=330 words
+- Phase 7.3 (vectorization) ✅ — splits: 50451/10811/10812 × 5000
+- Phase 7.4 (model training) ⏳ — kế hoạch đã có, chưa implement
+
+---
+
 ## [2026-06-20] Phase 4 — Model Training: Tinh chỉnh Logistic Regression & Đồng bộ tài liệu
 
 ### Hoàn thành
