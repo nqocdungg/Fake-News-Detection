@@ -14,5 +14,5 @@ data/raw/*
 !data/raw/.gitkeep
 
 # Models
-models/*.pkl
+# models/*.pkl
 models/*.joblib
