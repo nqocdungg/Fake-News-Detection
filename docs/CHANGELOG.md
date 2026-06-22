@@ -2,6 +2,29 @@
 
 ---
 
+## [2026-06-22] Phase 7.4.3 — Logistic Regression WELFake hoàn thành
+
+### Hoàn thành
+- Tạo mới và chạy đầy đủ notebook [15_welfake_logistic_regression.ipynb](file:///d:/PROJECT_GIT/Fake-News-Detection/notebooks/15_welfake_logistic_regression.ipynb)
+- Sử dụng GridSearchCV với lưới siêu tham số tối ưu (`liblinear` và `saga` với `max_iter=100`, `tol=0.01` để tăng tốc)
+- Khởi chạy song song với `n_jobs=2` giúp tránh hiện tượng tràn bộ nhớ (OOM) và tự động dừng tiến trình của hệ điều hành Windows trên tập dữ liệu lớn của WELFake
+- Lưu mô hình tối ưu tại [lr_welfake_model.pkl](file:///d:/PROJECT_GIT/Fake-News-Detection/models/lr_welfake_model.pkl)
+- Cập nhật trạng thái trong [master-plan.md](file:///d:/PROJECT_GIT/Fake-News-Detection/docs/plan/master-plan.md) và [phase-07.4-model-training-welfake.md](file:///d:/PROJECT_GIT/Fake-News-Detection/docs/plan/phase-07.4-model-training-welfake.md)
+
+### Kết quả
+- Best params: `C=10.0`, `class_weight='balanced'`, `solver='saga'`, `penalty='l2'`, `max_iter=100`, `tol=0.01`
+- Best CV F1 weighted: **0.9419**
+- Validation Accuracy: **0.9436**
+- Validation F1 weighted: **0.9436**
+- Lần chạy cuối: GridSearchCV hoàn thành trong **77.01 giây**
+- Confusion matrix: `[[5307, 250], [325, 4929]]`
+
+### Ghi chú
+- Logistic Regression đạt hiệu năng gần tương đồng với LinearSVC (F1 ~0.944) trên tập validation nhưng có khả năng phân phối xác suất và điều chuẩn linh hoạt hơn.
+
+---
+
+
 ## [2026-06-21] Phase 7.4.1 — SVM WELFake hoàn thành
 
 ### Hoàn thành

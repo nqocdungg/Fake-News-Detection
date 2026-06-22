@@ -207,14 +207,14 @@ Thu thập dữ liệu (ISOT + WELFake)
 - `data/welfake/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
 
 #### Sub-phase 7.4 — Model Training WELFake
-**Trạng thái:** 🔄 Đang thực hiện — SVM hoàn thành, NB/LR/RF còn thiếu
+**Trạng thái:** 🔄 Đang thực hiện — SVM và LR hoàn thành, NB/RF còn thiếu
 **Plan:** `docs/plan/phase-07.4-model-training-welfake.md`
 
 | Sub-phase | Model | Notebook | Val F1 weighted | Trạng thái |
 |-----------|-------|----------|:---------------:|------------|
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | **0.9451** | ✅ |
 | 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | — | ⏳ |
-| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | — | ⏳ |
+| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | **0.9436** | ✅ |
 | 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | — | ⏳ |
 
 **SVM WELFake đã xác minh:**
@@ -223,6 +223,13 @@ Thu thập dữ liệu (ISOT + WELFake)
 - Validation Accuracy/F1 weighted = `0.9451`
 - Confusion matrix = `[[5302,255],[338,4916]]`
 - Model: `models/svm_welfake_model.pkl`
+
+**Logistic Regression WELFake đã xác minh:**
+- Best `C=10.0`, `class_weight='balanced'`, `solver='saga'`, `penalty='l2'`
+- CV F1 weighted = `0.9419`
+- Validation Accuracy/F1 weighted = `0.9436`
+- Confusion matrix = `[[5307,250],[325,4929]]`
+- Model: `models/lr_welfake_model.pkl`
 
 **Output Phase 7.4:**
 - `models/nb_welfake_model.pkl`

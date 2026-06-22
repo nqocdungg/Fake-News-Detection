@@ -1,7 +1,7 @@
 # Phase 7.4 — Model Training trên WELFake
 
-> **Trạng thái tổng thể:** 🔄 Đang thực hiện — 1/4 model hoàn thành
-> **Cập nhật:** 2026-06-21
+> **Trạng thái tổng thể:** 🔄 Đang thực hiện — 2/4 model hoàn thành
+> **Cập nhật:** 2026-06-22
 
 ---
 
@@ -26,7 +26,7 @@ Do mỗi thuật toán có grid, thời gian chạy và phân tích riêng, Phas
 |-----------|-------|----------|------------|
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | ✅ Hoàn thành |
 | 7.4.2 | Multinomial Naive Bayes | `14_welfake_naive_bayes.ipynb` | ⏳ Chưa tạo |
-| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ⏳ Chưa tạo |
+| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ✅ Hoàn thành |
 | 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ⏳ Chưa tạo |
 
 Plan cũ dùng một notebook `13_welfake_model_training.ipynb` cho cả bốn model không còn phù hợp với triển khai thực tế và được thay bằng cấu trúc trên.
@@ -154,7 +154,7 @@ param_grid = {
 |-------|-------------|:-----:|:------------:|:---------------:|------------|
 | LinearSVC | `C=1` | 0.9441 | 0.9451 | 0.9451 | ✅ |
 | Naive Bayes | — | — | — | — | ⏳ |
-| Logistic Regression | — | — | — | — | ⏳ |
+| Logistic Regression | `C=10.0`, `class_weight='balanced'`, `solver='saga'`, `penalty='l2'` | 0.9419 | 0.9436 | 0.9436 | ✅ |
 | Random Forest | — | — | — | — | ⏳ |
 
 Không chọn “model tốt nhất cuối cùng” bằng test set trong Phase 7.4. Bảng này chỉ là validation summary.
@@ -167,7 +167,7 @@ Không chọn “model tốt nhất cuối cùng” bằng test set trong Phase 
 models/
 ├── svm_welfake_model.pkl   ✅
 ├── nb_welfake_model.pkl    ⏳
-├── lr_welfake_model.pkl    ⏳
+├── lr_welfake_model.pkl    ✅
 └── rf_welfake_model.pkl    ⏳
 ```
 
