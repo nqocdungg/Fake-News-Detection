@@ -16,3 +16,7 @@ data/raw/*
 # Models
 # models/*.pkl
 models/*.joblib
+
+AI_Intro 
+
+AGENTS.md
