@@ -154,7 +154,7 @@ param_grid = {
 |-------|-------------|:-----:|:------------:|:---------------:|------------|
 | LinearSVC | `C=1` | 0.9441 | 0.9451 | 0.9451 | ✅ |
 | Naive Bayes | — | — | — | — | ⏳ |
-| Logistic Regression | `C=10.0`, `class_weight='balanced'`, `solver='saga'`, `penalty='l2'` | 0.9419 | 0.9436 | 0.9436 | ✅ |
+| Logistic Regression | `C=5.0`, `solver='saga'`, `max_iter=500` (penalty='l2' mặc định) | 0.9447 | 0.9459 | 0.9459 | ✅ |
 | Random Forest | — | — | — | — | ⏳ |
 
 Không chọn “model tốt nhất cuối cùng” bằng test set trong Phase 7.4. Bảng này chỉ là validation summary.

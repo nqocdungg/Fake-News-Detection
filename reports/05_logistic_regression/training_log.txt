@@ -1,4 +1,4 @@
-Training/GridSearch time: 10.56 seconds
+Training/GridSearch time: 39.68 seconds
 Best params: {'C': 5.0, 'max_iter': 500, 'solver': 'saga'}
 Best CV weighted F1: 0.984985
 Validation accuracy: 0.987582

@@ -28,12 +28,12 @@
 - Cập nhật trạng thái trong [master-plan.md](file:///d:/PROJECT_GIT/Fake-News-Detection/docs/plan/master-plan.md) và [phase-07.4-model-training-welfake.md](file:///d:/PROJECT_GIT/Fake-News-Detection/docs/plan/phase-07.4-model-training-welfake.md)
 
 ### Kết quả
-- Best params: `C=10.0`, `class_weight='balanced'`, `solver='saga'`, `penalty='l2'`, `max_iter=100`, `tol=0.01`
-- Best CV F1 weighted: **0.9419**
-- Validation Accuracy: **0.9436**
-- Validation F1 weighted: **0.9436**
-- Lần chạy cuối: GridSearchCV hoàn thành trong **77.01 giây**
-- Confusion matrix: `[[5307, 250], [325, 4929]]`
+- Best params: `C=5.0`, `solver='saga'`, `max_iter=500` (penalty='l2' mặc định)
+- Best CV F1 weighted: **0.9447**
+- Validation Accuracy: **0.9459**
+- Validation F1 weighted: **0.9459**
+- Lần chạy cuối: GridSearchCV hoàn thành trong **75.39 giây**
+- Confusion matrix: `[[5291, 266], [319, 4935]]`
 
 ### Ghi chú
 - Logistic Regression đạt hiệu năng gần tương đồng với LinearSVC (F1 ~0.944) trên tập validation nhưng có khả năng phân phối xác suất và điều chuẩn linh hoạt hơn.

@@ -92,15 +92,17 @@ TF-IDF được sử dụng để chuyển đổi dữ liệu văn bản thành 
 
 ## 9. Thiết kế thí nghiệm
 
-### Thí nghiệm 1: Train/Test trên cùng dataset
-- Train ISOT → Test ISOT.
-- Train Dataset 2 → Test Dataset 2.
+### Thí nghiệm 1: Đánh giá Nội miền (In-domain Evaluation)
+*   **Cách làm:** Train trên ISOT ➔ Test trên ISOT; Train trên WELFake ➔ Test trên WELFake.
+*   **Mục tiêu:** Xác định mức trần hiệu năng (baseline) của từng mô hình khi dữ liệu kiểm thử cùng phân phối với dữ liệu huấn luyện.
 
-### Thí nghiệm 2: Cross-Dataset Evaluation (Đánh giá khả năng tổng quát hóa (Generalization) khi đối mặt với dữ liệu hoàn toàn mới.)
-- Train ISOT → Test Dataset 2.
-- Train Dataset 2 → Test ISOT.
+### Thí nghiệm 2: Đánh giá Chéo miền (Cross-domain Evaluation)
+*   **Cách làm:** Train trên ISOT ➔ Test trên WELFake; Train trên WELFake ➔ Test trên ISOT.
+*   **Mục tiêu:** Đánh giá khả năng tổng quát hóa (Generalization) khi mô hình phải đối mặt với dữ liệu từ nguồn hoàn toàn mới (kiểm chứng hiện tượng domain shift).
 
-Mục tiêu là đánh giá khả năng tổng quát hóa của mô hình trên các nguồn dữ liệu khác nhau.
+### Thí nghiệm 3: Huấn luyện Gộp (Pooled-Domain Evaluation)
+*   **Cách làm:** Gộp tập Train của ISOT và WELFake thành tập huấn luyện chung ➔ Huấn luyện mô hình ➔ Đánh giá độc lập trên tập Test của từng bộ.
+*   **Mục tiêu:** Đánh giá hiệu quả của việc gia tăng quy mô và tính đa dạng của dữ liệu huấn luyện lên cả hiệu năng nội miền và khả năng tổng quát hóa.
 
 ## 10. Độ đo đánh giá
 
