@@ -2,6 +2,25 @@
 
 ---
 
+## [2026-06-23] Phase 7.4.4 — Random Forest WELFake hoàn thành & Nén mô hình
+
+### Hoàn thành
+- Tạo mới và chạy đầy đủ notebook [16_welfake_random_forest.ipynb](file:///c:/Users/sf/Documents/GitHub/Fake-News-Detection/notebooks/16_welfake_random_forest.ipynb).
+- Sử dụng GridSearchCV với Random Forest trên tập dữ liệu WELFake.
+- Nén trực tiếp file model `.pkl` bằng tham số `compress=3` của `joblib`, giảm kích thước từ **198.65 MB** xuống còn **~46 MB**, qua đó giải quyết thành công vấn đề quá giới hạn 100MB của GitHub mà không cần dùng đến Git LFS.
+- Cập nhật tài liệu lý thuyết Random Forest (trong file artifact ngoài dự án).
+- Cập nhật trạng thái trong [master-plan.md](file:///c:/Users/sf/Documents/GitHub/Fake-News-Detection/docs/plan/master-plan.md).
+
+### Kết quả
+- Best params: `max_depth=None`, `min_samples_split=2`, `n_estimators=300`
+- Best CV F1 weighted: **0.9471**
+- Validation Accuracy: **0.9492**
+- Validation F1 weighted: **0.9492**
+- Lần chạy cuối: GridSearchCV hoàn thành trong **6683.34 giây** (~111 phút). Quá trình mất thời gian rất dài do sự chênh lệch lớn về độ đa dạng của dữ liệu (WELFake vs ISOT) khiến cây quyết định phải phân nhánh rất sâu.
+- Confusion matrix: `[[5279, 278], [263, 4991]]`
+
+---
+
 ## [2026-06-23] Phase 8 — Triển khai đánh giá chéo miền (Cross-Dataset Evaluation) cho LR & SVM thành công
 
 ### Hoàn thành

@@ -146,7 +146,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 7 — Dataset 2 Integration: WELFake
-**Trạng thái:** 🔄 7.1–7.3 ✅ / 7.4 hoàn thành 1/4 model
+**Trạng thái:** 🔄 7.1–7.3 ✅ / 7.4 hoàn thành 3/4 model (còn NB)
 **Plan tổng thể:** `docs/plan/phase-07-dataset2-welfake.md`
 
 #### Sub-phase 7.1 — Preprocessing WELFake
@@ -213,7 +213,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | **0.9451** | ✅ |
 | 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | — | ⏳ |
 | 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | **0.9459** | ✅ |
-| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | — | ⏳ |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | **0.9492** | ✅ |
 
 **SVM WELFake đã xác minh:**
 - Best `C=1`
@@ -231,9 +231,9 @@ Thu thập dữ liệu (ISOT + WELFake)
 
 **Output Phase 7.4:**
 - `models/nb_welfake_model.pkl`
-- `models/lr_welfake_model.pkl`
+- `models/lr_welfake_model.pkl` ✅
 - `models/svm_welfake_model.pkl` ✅
-- `models/rf_welfake_model.pkl`
+- `models/rf_welfake_model.pkl` ✅
 
 ---
 
@@ -317,7 +317,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 13 | `13_welfake_svm.ipynb` | WELFake train/val | `svm_welfake_model.pkl` ✅ |
 | 14 | `14_welfake_naive_bayes.ipynb` | WELFake train/val | `nb_welfake_model.pkl` ⏳ |
 | 15 | `15_welfake_logistic_regression.ipynb` | WELFake train/val | `lr_welfake_model.pkl` ✅ |
-| 16 | `16_welfake_random_forest.ipynb` | WELFake train/val | `rf_welfake_model.pkl` ⏳ |
+| 16 | `16_welfake_random_forest.ipynb` | WELFake train/val | `rf_welfake_model.pkl` ✅ |
 | 17 | `17_cross_dataset_eval.ipynb` | all models + exact raw test splits | cross-eval table ⏳ |
 | 18 | `18_pooled_training_eval.ipynb` | all models + exact raw test splits | pooled-eval table ⏳ |
 
@@ -342,7 +342,7 @@ Phase 0 → Phase 1 → Phase 2
                                          ↓
                                       Phase 5 → Phase 6
                                                     ↓
-          Phase 7.1✅→7.2✅→7.3✅→7.4 (SVM✅, NB/LR/RF⏳) → Phase 8 → Phase 9
+          Phase 7.1✅→7.2✅→7.3✅→7.4 (SVM✅ LR✅ RF✅ NB⏳) → Phase 8 → Phase 9
 ```
 
 ---
