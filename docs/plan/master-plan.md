@@ -39,7 +39,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 1 | Preprocessing ISOT | ✅ Hoàn thành |
 | 2 | EDA ISOT | ✅ Hoàn thành |
 | 3 | TF-IDF Vectorization ISOT | ✅ Hoàn thành |
-| 4 | Model Training ISOT (4 thuật toán) | 🔄 3/4 xong (RF còn thiếu) |
+| 4 | Model Training ISOT (4 thuật toán) | ✅ Hoàn thành |
 | 5 | Model Comparison ISOT (same-dataset) | ⏳ Chờ Phase 4 hoàn thành |
 | 6 | Feature & Error Analysis | ⏳ Chờ Phase 5 |
 | 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 + SVM xong; 3 model còn thiếu |
@@ -109,7 +109,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 4 — Model Training ISOT
-**Trạng thái:** 🔄 3/4 xong — **RF còn thiếu**
+**Trạng thái:** ✅ Hoàn thành
 
 **Kết quả thực nghiệm (Validation Set ISOT):**
 
@@ -118,11 +118,9 @@ Thu thập dữ liệu (ISOT + WELFake)
 | Naive Bayes | `alpha=0.01, fit_prior=True` | 0.9415 | 0.9416 | `04_naive_bayes.ipynb` | ✅ |
 | Logistic Regression | `C=20.0, penalty=l2, solver=saga, balanced` | ~0.99 | ~0.98 | `05_logistic_regression.ipynb` | ✅ |
 | SVM (LinearSVC) | `C=1, max_iter=2000` | 0.9869 | 0.9869 | `06_svm.ipynb` | ✅ |
-| Random Forest | — | — | — | `07_random_forest.ipynb` | ❌ Chưa có code |
+| Random Forest | `max_depth=None, min_samples_split=5, n_estimators=300` | 0.98 | 0.98 | `07_random_forest.ipynb` | ✅ |
 
 **SVM notebook:** nhãn hiển thị đã được sửa thành `REAL(0)/FAKE(1)`.
-
-**RF cần làm:** `GridSearchCV` trên `n_estimators` ∈ [100, 200, 300], `max_depth` ∈ [None, 10, 20], `min_samples_split` ∈ [2, 5].
 
 ---
 
@@ -286,7 +284,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 04 | `04_naive_bayes.ipynb` | ISOT splits | `naive_bayes_model.pkl` ✅ |
 | 05 | `05_logistic_regression.ipynb` | ISOT splits | `lr_model.pkl` ✅ |
 | 06 | `06_svm.ipynb` | ISOT splits | `svm_model.pkl` ✅ |
-| 07 | `07_random_forest.ipynb` | ISOT splits | `rf_model.pkl` ❌ |
+| 07 | `07_random_forest.ipynb` | ISOT splits | `rf_model.pkl` ✅ |
 | 08 | `08_comparison.ipynb` | 4 models + ISOT test | metrics bảng ⏳ |
 | 09 | `09_feature_error_analysis.ipynb` | best model | feature charts ⏳ |
 | 10 | `10_welfake_preprocessing.ipynb` | KaggleHub WELFake | `preprocessed_welfake_full.csv` ✅ |
@@ -307,7 +305,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | Hưng | Phase 1, Phase 4 (NB ✅), Phase 5+6 |
 | Xuân | Phase 2, Phase 4 (LR ✅), Phase 5+6 |
 | Dung | Phase 3, Phase 4 (SVM ✅), Phase 7 |
-| Thủy | Phase 0, Phase 4 (RF ❌), Phase 8, Phase 9 |
+| Thủy | Phase 0, Phase 4 (RF ✅), Phase 8, Phase 9 |
 
 ---
 
@@ -315,7 +313,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 
 ```
 Phase 0 → Phase 1 → Phase 2
-                 └→ Phase 3 → Phase 4 (NB✅ LR✅ SVM✅ RF❌)
+                 └→ Phase 3 → Phase 4 (NB✅ LR✅ SVM✅ RF✅)
                                          ↓
                                       Phase 5 → Phase 6
                                                     ↓

@@ -2,6 +2,22 @@
 
 ---
 
+## [2026-06-23] Phase 4 — Random Forest ISOT hoàn thành
+
+### Hoàn thành
+- Đã chạy thành công notebook `07_random_forest.ipynb`.
+- Thực hiện GridSearchCV tìm kiếm siêu tham số tốt nhất cho Random Forest trên dữ liệu TF-IDF của ISOT.
+- Cập nhật mô hình `models/rf_model.pkl` và kết quả đánh giá (Confusion Matrix).
+
+### Kết quả
+- Siêu tham số tối ưu: `max_depth=None, min_samples_split=5, n_estimators=300`.
+- Điểm Accuracy trên tập Validation: **0.98**
+- Điểm F1-score (weighted): **0.98**
+- Lần chạy cuối: GridSearchCV hoàn thành trong **1687.11 giây** (~28 phút).
+- Confusion Matrix: `[[3179, 0], [46, 2573]]`
+
+---
+
 ## [2026-06-22] Phase 7.4.3 — Logistic Regression WELFake hoàn thành
 
 ### Hoàn thành
