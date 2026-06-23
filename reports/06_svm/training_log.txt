@@ -1,0 +1,14 @@
+LinearSVC GridSearch time: 4.91s
+Best params: {'C': 1}
+Best CV weighted F1: 0.987095
+Validation accuracy: 0.988617
+Validation weighted F1: 0.988614
+
+              precision    recall  f1-score   support
+
+    REAL (0)       0.99      0.99      0.99      3179
+    FAKE (1)       0.99      0.98      0.99      2619
+
+    accuracy                           0.99      5798
+   macro avg       0.99      0.99      0.99      5798
+weighted avg       0.99      0.99      0.99      5798
