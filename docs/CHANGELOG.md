@@ -2,6 +2,32 @@
 
 ---
 
+## [2026-06-23] Phase 8 — Triển khai đánh giá chéo miền (Cross-Dataset Evaluation) cho LR & SVM thành công
+
+### Hoàn thành
+- Sửa đổi notebook [10_welfake_preprocessing.ipynb](file:///d:/PROJECT_GIT/Fake-News-Detection/notebooks/10_welfake_preprocessing.ipynb) loại bỏ việc đảo ngược nhãn vô tình để đồng bộ nhãn chuẩn (`0 = REAL`, `1 = FAKE`).
+- Chạy lại các notebook Vectorization (12), SVM (13) và Logistic Regression (15) cho WELFake với nhãn đã được chuẩn hóa.
+- Tạo mới và chạy thành công notebook [17_cross_dataset_eval.ipynb](file:///d:/PROJECT_GIT/Fake-News-Detection/notebooks/17_cross_dataset_eval.ipynb).
+- Thực hiện đánh giá hiệu năng nội miền (In-domain) và chéo miền (Cross-domain) cho cả hai mô hình Logistic Regression và SVM.
+- Xuất các đồ thị confusion matrix và bảng so sánh F1-score vào thư mục `reports/`.
+
+### Kết quả
+1. **Logistic Regression (LR)**:
+   - ISOT ➔ ISOT (In-domain): F1-score (weighted) = **99.43%**
+   - WELFake ➔ WELFake (In-domain): F1-score (weighted) = **94.34%**
+   - ISOT ➔ WELFake (Cross-domain): F1-score (weighted) = **85.43%**
+   - WELFake ➔ ISOT (Cross-domain): F1-score (weighted) = **98.29%**
+2. **SVM (LinearSVC)**:
+   - ISOT ➔ ISOT (In-domain): F1-score (weighted) = **99.55%**
+   - WELFake ➔ WELFake (In-domain): F1-score (weighted) = **94.51%**
+   - ISOT ➔ WELFake (Cross-domain): F1-score (weighted) = **85.38%**
+   - WELFake ➔ ISOT (Cross-domain): F1-score (weighted) = **98.26%**
+
+### Nhận xét
+- Sự chênh lệch lớn giữa hai chiều đánh giá chéo: WELFake ➔ ISOT đạt F1 cực kỳ cao (~98.3%), chứng tỏ WELFake là tập dữ liệu tổng quát tốt. Trong khi đó, chiều ngược lại ISOT ➔ WELFake bị giảm sút do hiện tượng domain shift (ISOT thiên lệch về phong cách của Reuters).
+
+---
+
 ## [2026-06-23] Phase 4 — Random Forest ISOT hoàn thành
 
 ### Hoàn thành

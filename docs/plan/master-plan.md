@@ -42,8 +42,8 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 4 | Model Training ISOT (4 thuật toán) | ✅ Hoàn thành |
 | 5 | Model Comparison ISOT (same-dataset) | ⏳ Chờ Phase 4 hoàn thành |
 | 6 | Feature & Error Analysis | ⏳ Chờ Phase 5 |
-| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 + SVM xong; 3 model còn thiếu |
-| 8 | Cross-Dataset Evaluation | ⏳ Chờ Phase 4 RF + Phase 7.4 đủ 4 model |
+| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 xong; SVM & LR hoàn thành (đã sửa nhãn); NB/RF còn thiếu |
+| 8 | Cross-Dataset Evaluation | 🔄 Đang thực hiện — Xong LR & SVM cho Kịch bản 1 & 2 |
 | 9 | Report & Documentation | ⏳ Chờ tất cả |
 
 ---
@@ -238,11 +238,28 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 8 — Evaluation & Comparison (Chiến lược đánh giá và so sánh)
-**Trạng thái:** ⏳ Chờ Phase 4 RF + Phase 7.4.2–7.4.4
+**Trạng thái:** 🔄 Đang thực hiện — Hoàn thành đánh giá cho Logistic Regression & SVM (Kịch bản 1 & 2)
 
 **Notebooks:**
-- `17_cross_dataset_eval.ipynb` *(chưa tạo - In-domain & Cross-domain)*
-- `18_pooled_training_eval.ipynb` *(chưa tạo - Pooled-domain)*
+- `17_cross_dataset_eval.ipynb` ✅ Hoàn thành (LR & SVM)
+- `18_pooled_training_eval.ipynb` ⏳ Chờ các mô hình còn lại
+
+#### Kết quả thực nghiệm Kịch bản 1 & 2 (LR & SVM):
+
+| Mô hình | Kịch bản thực nghiệm | Accuracy | Precision | Recall | F1-Score (weighted) |
+|---|---|---|---|---|---|
+| **Logistic Regression** | ISOT ➔ ISOT (In-domain) | 0.9943 | 0.9943 | 0.9943 | 0.9943 |
+| | WELFake ➔ WELFake (In-domain) | 0.9434 | 0.9434 | 0.9434 | 0.9434 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8557 | 0.8658 | 0.8557 | 0.8543 |
+| | WELFake ➔ ISOT (Cross-domain) | **0.9829** | 0.9830 | 0.9829 | **0.9829** |
+| **SVM (LinearSVC)** | ISOT ➔ ISOT (In-domain) | 0.9955 | 0.9955 | 0.9955 | 0.9955 |
+| | WELFake ➔ WELFake (In-domain) | 0.9452 | 0.9452 | 0.9452 | 0.9451 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8553 | 0.8653 | 0.8553 | 0.8538 |
+| | WELFake ➔ ISOT (Cross-domain) | **0.9826** | 0.9826 | 0.9826 | **0.9826** |
+
+**Nhận xét quan trọng:**
+1. **Khả năng tổng quát hóa tuyệt vời của WELFake**: Mô hình huấn luyện trên WELFake khi test trên ISOT đạt hiệu năng gần như hoàn hảo (~98.3% F1-score). Điều này chứng minh tập WELFake (72K bài viết từ nhiều nguồn) có độ phủ từ vựng và tính tổng quát rất lớn, bao quát tốt tập ISOT.
+2. **Hiện tượng lệch miền (Domain Shift) của ISOT**: Mô hình huấn luyện trên ISOT khi test chéo sang WELFake bị giảm hiệu năng xuống còn ~85.4% F1-score. Điều này là do ISOT chỉ học từ vựng/phong cách viết bài của Reuters (tin thật trong ISOT 100% là của Reuters), nên khi gặp các nguồn tin đa dạng khác trong WELFake sẽ bị bỡ ngỡ.
 **Plan:** `docs/plan/phase-08-cross-eval.md`
 
 **Ba kịch bản thực nghiệm:**
