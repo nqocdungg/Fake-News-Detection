@@ -1,0 +1,20 @@
+{
+  "best_params": {
+    "alpha": 0.01,
+    "fit_prior": true
+  },
+  "best_cv_accuracy": 0.9488079837368323,
+  "validation_accuracy": 0.9532597447395653,
+  "validation_f1_weighted": 0.9532813363574036,
+  "training_time_seconds": 2.4294679164886475,
+  "confusion_matrix": [
+    [
+      3029,
+      150
+    ],
+    [
+      121,
+      2498
+    ]
+  ]
+}

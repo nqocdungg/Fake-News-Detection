@@ -1,0 +1,81 @@
+ngram,count,label,type
+said,97824,REAL,unigram
+trump,59110,REAL,unigram
+state,36752,REAL,unigram
+president,27181,REAL,unigram
+republican,22932,REAL,unigram
+government,19580,REAL,unigram
+year,19253,REAL,unigram
+house,18217,REAL,unigram
+new,17481,REAL,unigram
+united,15398,REAL,unigram
+people,15229,REAL,unigram
+party,15210,REAL,unigram
+official,14898,REAL,unigram
+election,14381,REAL,unigram
+told,14108,REAL,unigram
+country,13997,REAL,unigram
+say,12940,REAL,unigram
+washington,12458,REAL,unigram
+campaign,11319,REAL,unigram
+group,11239,REAL,unigram
+united state,12044,REAL,bigram
+donald trump,10138,REAL,bigram
+white house,9088,REAL,bigram
+north korea,6187,REAL,bigram
+president donald,5868,REAL,bigram
+new york,4547,REAL,bigram
+prime minister,4166,REAL,bigram
+said statement,3910,REAL,bigram
+islamic state,3587,REAL,bigram
+official said,3570,REAL,bigram
+trump said,3558,REAL,bigram
+barack obama,3320,REAL,bigram
+told reporter,3145,REAL,bigram
+president barack,2893,REAL,bigram
+supreme court,2652,REAL,bigram
+trump administration,2547,REAL,bigram
+hillary clinton,2528,REAL,bigram
+secretary state,2323,REAL,bigram
+house representative,2268,REAL,bigram
+united nation,2252,REAL,bigram
+trump,71460,FAKE,unigram
+said,23063,FAKE,unigram
+people,21147,FAKE,unigram
+president,20432,FAKE,unigram
+state,16330,FAKE,unigram
+donald,15624,FAKE,unigram
+republican,14866,FAKE,unigram
+like,14768,FAKE,unigram
+obama,14350,FAKE,unigram
+clinton,13874,FAKE,unigram
+time,13766,FAKE,unigram
+image,13659,FAKE,unigram
+video,12662,FAKE,unigram
+say,12559,FAKE,unigram
+american,12177,FAKE,unigram
+year,11378,FAKE,unigram
+hillary,11030,FAKE,unigram
+white,10904,FAKE,unigram
+new,10876,FAKE,unigram
+news,10504,FAKE,unigram
+donald trump,13919,FAKE,bigram
+hillary clinton,5337,FAKE,bigram
+white house,5102,FAKE,bigram
+united state,4627,FAKE,bigram
+president obama,3392,FAKE,bigram
+new york,3116,FAKE,bigram
+fox news,2763,FAKE,bigram
+president trump,2724,FAKE,bigram
+trump supporter,1835,FAKE,bigram
+trump campaign,1636,FAKE,bigram
+barack obama,1522,FAKE,bigram
+supreme court,1517,FAKE,bigram
+ted cruz,1473,FAKE,bigram
+fake news,1367,FAKE,bigram
+republican party,1341,FAKE,bigram
+screen capture,1331,FAKE,bigram
+featured image,1262,FAKE,bigram
+trump said,1249,FAKE,bigram
+bernie sander,1244,FAKE,bigram
+social medium,1186,FAKE,bigram

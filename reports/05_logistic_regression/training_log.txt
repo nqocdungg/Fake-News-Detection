@@ -1,0 +1,14 @@
+Training/GridSearch time: 10.56 seconds
+Best params: {'C': 5.0, 'max_iter': 500, 'solver': 'saga'}
+Best CV weighted F1: 0.984985
+Validation accuracy: 0.987582
+Validation weighted F1: 0.987577
+
+              precision    recall  f1-score   support
+
+    REAL (0)       0.99      0.99      0.99      3179
+    FAKE (1)       0.99      0.98      0.99      2619
+
+    accuracy                           0.99      5798
+   macro avg       0.99      0.99      0.99      5798
+weighted avg       0.99      0.99      0.99      5798

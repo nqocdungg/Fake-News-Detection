@@ -1,0 +1,21 @@
+{
+  "best_params": {
+    "max_depth": null,
+    "min_samples_split": 5,
+    "n_estimators": 200
+  },
+  "best_cv_f1_weighted": 0.9787584546176783,
+  "training_time_seconds": 235.9170160293579,
+  "validation_accuracy": 0.9777509486029665,
+  "validation_f1_weighted": 0.9777283070164081,
+  "confusion_matrix": [
+    [
+      3142,
+      37
+    ],
+    [
+      92,
+      2527
+    ]
+  ]
+}

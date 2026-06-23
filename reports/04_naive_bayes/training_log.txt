@@ -1,0 +1,14 @@
+Training/GridSearch time: 2.43 seconds
+Best params: {'alpha': 0.01, 'fit_prior': True}
+Best CV accuracy: 0.948808
+Validation accuracy: 0.953260
+Validation weighted F1: 0.953281
+
+              precision    recall  f1-score   support
+
+    REAL (0)       0.96      0.95      0.96      3179
+    FAKE (1)       0.94      0.95      0.95      2619
+
+    accuracy                           0.95      5798
+   macro avg       0.95      0.95      0.95      5798
+weighted avg       0.95      0.95      0.95      5798
