@@ -1,4 +1,4 @@
-LinearSVC GridSearch time: 4.91s
+LinearSVC GridSearch time: 12.64s
 Best params: {'C': 1}
 Best CV weighted F1: 0.987095
 Validation accuracy: 0.988617
