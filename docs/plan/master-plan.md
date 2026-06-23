@@ -116,7 +116,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | Model | Best Params | Val Accuracy | Val F1 (weighted) | Notebook | Status |
 |-------|-------------|:---:|:---:|----------|--------|
 | Naive Bayes | `alpha=0.01, fit_prior=True` | 0.9415 | 0.9416 | `04_naive_bayes.ipynb` | ✅ |
-| Logistic Regression | `C=20.0, penalty=l2, solver=saga, balanced` | ~0.99 | ~0.98 | `05_logistic_regression.ipynb` | ✅ |
+| Logistic Regression | `C=5.0, penalty=l2, solver=lbfgs, max_iter=500` | ~0.99 | ~0.99 | `05_logistic_regression.ipynb` | ✅ |
 | SVM (LinearSVC) | `C=1, max_iter=2000` | 0.9869 | 0.9869 | `06_svm.ipynb` | ✅ |
 | Random Forest | `max_depth=None, min_samples_split=5, n_estimators=300` | 0.98 | 0.98 | `07_random_forest.ipynb` | ✅ |
 
