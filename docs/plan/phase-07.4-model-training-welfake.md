@@ -27,7 +27,7 @@ Do mỗi thuật toán có grid, thời gian chạy và phân tích riêng, Phas
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | ✅ Hoàn thành |
 | 7.4.2 | Multinomial Naive Bayes | `14_welfake_naive_bayes.ipynb` | ⏳ Chưa tạo |
 | 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ✅ Hoàn thành |
-| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ⏳ Chưa tạo |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ✅ Hoàn thành |
 
 Plan cũ dùng một notebook `13_welfake_model_training.ipynb` cho cả bốn model không còn phù hợp với triển khai thực tế và được thay bằng cấu trúc trên.
 
@@ -111,7 +111,7 @@ param_grid = [
 - Output: `models/lr_welfake_model.pkl`
 - Ghi convergence warnings nếu có; không im lặng coi model chưa hội tụ là hợp lệ.
 
-### 7.4.4 — Random Forest ⏳
+### 7.4.4 — Random Forest ✅
 
 Notebook dự kiến: `16_welfake_random_forest.ipynb`.
 

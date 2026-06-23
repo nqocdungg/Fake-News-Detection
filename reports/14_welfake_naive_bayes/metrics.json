@@ -6,7 +6,7 @@
   "best_cv_accuracy": 0.8465442982241189,
   "validation_accuracy": 0.8416427712515031,
   "validation_f1_weighted": 0.8414138540157886,
-  "training_time_seconds": 5.365483999252319,
+  "training_time_seconds": 4.722742557525635,
   "confusion_matrix": [
     [
       4255,

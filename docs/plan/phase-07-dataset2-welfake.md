@@ -58,11 +58,11 @@ Phân phối sau xử lý:
 | 7.1 | Preprocessing | `10_welfake_preprocessing.ipynb` / `phase-07.1-preprocessing.md` | ✅ |
 | 7.2 | EDA | `11_welfake_eda.ipynb` / `phase-07.2-eda.md` | ✅ |
 | 7.3 | TF-IDF Vectorization | `12_welfake_vectorization.ipynb` / `phase-07.3-vectorization.md` | ✅ |
-| 7.4 | Model Training WELFake | `phase-07.4-model-training-welfake.md` | 🔄 1/4 |
+| 7.4 | Model Training WELFake | `phase-07.4-model-training-welfake.md` | 🔄 3/4 |
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` / `phase-07.4.1-svm-welfake.md` | ✅ |
 | 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | ⏳ |
-| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ⏳ |
-| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ⏳ |
+| 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | ✅ |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | ✅ |
 
 Không dùng tên `13_welfake_model_training.ipynb`: notebook số 13 hiện đã được triển khai riêng cho SVM.
 

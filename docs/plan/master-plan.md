@@ -205,15 +205,15 @@ Thu thập dữ liệu (ISOT + WELFake)
 - `data/welfake/y_train.pkl`, `y_val.pkl`, `y_test.pkl`
 
 #### Sub-phase 7.4 — Model Training WELFake
-**Trạng thái:** 🔄 Đang thực hiện — SVM và LR hoàn thành, NB/RF còn thiếu
+**Trạng thái:** ✅ Hoàn thành
 **Plan:** `docs/plan/phase-07.4-model-training-welfake.md`
 
 | Sub-phase | Model | Notebook | Val F1 weighted | Trạng thái |
 |-----------|-------|----------|:---------------:|------------|
 | 7.4.1 | LinearSVC | `13_welfake_svm.ipynb` | **0.9451** | ✅ |
-| 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | — | ⏳ |
+| 7.4.2 | Naive Bayes | `14_welfake_naive_bayes.ipynb` | **0.8414** | ✅ |
 | 7.4.3 | Logistic Regression | `15_welfake_logistic_regression.ipynb` | **0.9459** | ✅ |
-| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | **0.9492** | ✅ |
+| 7.4.4 | Random Forest | `16_welfake_random_forest.ipynb` | **0.9493** | ✅ |
 
 **SVM WELFake đã xác minh:**
 - Best `C=1`
@@ -229,8 +229,22 @@ Thu thập dữ liệu (ISOT + WELFake)
 - Confusion matrix = `[[5291,266],[319,4935]]`
 - Model: `models/lr_welfake_model.pkl`
 
+**Naive Bayes WELFake đã xác minh:**
+- Best `alpha=0.01`, `fit_prior=True`
+- CV Accuracy = `0.8465`
+- Validation Accuracy = `0.8416`, F1 weighted = `0.8414`
+- Confusion matrix = `[[4255, 999], [713, 4844]]`
+- Model: `models/nb_welfake_model.pkl`
+
+**Random Forest WELFake đã xác minh:**
+- Best `max_depth=None`, `min_samples_split=2`, `n_estimators=300`
+- CV F1 weighted = `0.9474`
+- Validation Accuracy/F1 weighted = `0.9493`
+- Confusion matrix = `[[5003, 251], [297, 5260]]`
+- Model: `models/rf_welfake_model.pkl`
+
 **Output Phase 7.4:**
-- `models/nb_welfake_model.pkl`
+- `models/nb_welfake_model.pkl` ✅
 - `models/lr_welfake_model.pkl` ✅
 - `models/svm_welfake_model.pkl` ✅
 - `models/rf_welfake_model.pkl` ✅
@@ -238,11 +252,11 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 8 — Evaluation & Comparison (Chiến lược đánh giá và so sánh)
-**Trạng thái:** 🔄 Đang thực hiện — Hoàn thành đánh giá cho Logistic Regression & SVM (Kịch bản 1 & 2)
+**Trạng thái:** 🔄 Đang thực hiện — Đã đánh giá Kịch bản 1 & 2 cho LR & SVM (Bỏ qua Pooled-training vì quá nặng, thiếu cross-eval cho NB & RF).
 
 **Notebooks:**
-- `17_cross_dataset_eval.ipynb` ✅ Hoàn thành (LR & SVM)
-- `18_pooled_training_eval.ipynb` ⏳ Chờ các mô hình còn lại
+- `17_cross_dataset_eval.ipynb` 🔄 Đang thực hiện (Đã có LR & SVM, thiếu NB & RF)
+- `18_pooled_training_eval.ipynb` ⏭️ Bỏ qua
 
 #### Kết quả thực nghiệm Kịch bản 1 & 2 (LR & SVM):
 
@@ -315,11 +329,11 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 11 | `11_welfake_eda.ipynb` | WELFake CSV | WELFake charts ✅ |
 | 12 | `12_welfake_vectorization.ipynb` | WELFake CSV | WELFake TF-IDF splits ✅ |
 | 13 | `13_welfake_svm.ipynb` | WELFake train/val | `svm_welfake_model.pkl` ✅ |
-| 14 | `14_welfake_naive_bayes.ipynb` | WELFake train/val | `nb_welfake_model.pkl` ⏳ |
+| 14 | `14_welfake_naive_bayes.ipynb` | WELFake train/val | `nb_welfake_model.pkl` ✅ |
 | 15 | `15_welfake_logistic_regression.ipynb` | WELFake train/val | `lr_welfake_model.pkl` ✅ |
 | 16 | `16_welfake_random_forest.ipynb` | WELFake train/val | `rf_welfake_model.pkl` ✅ |
 | 17 | `17_cross_dataset_eval.ipynb` | all models + exact raw test splits | cross-eval table ⏳ |
-| 18 | `18_pooled_training_eval.ipynb` | all models + exact raw test splits | pooled-eval table ⏳ |
+| 18 | `18_pooled_training_eval.ipynb` | all models + exact raw test splits | pooled-eval table ⏭️ Bỏ qua |
 
 ---
 

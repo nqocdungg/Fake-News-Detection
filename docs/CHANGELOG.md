@@ -2,6 +2,27 @@
 
 ---
 
+## [2026-06-23] Phase 7.4.2 & Cập nhật Kế hoạch Phase 8
+
+### Hoàn thành
+
+- Chạy thành công notebook `14_welfake_naive_bayes.ipynb` huấn luyện Multinomial Naive Bayes trên dữ liệu WELFake.
+- Lưu mô hình tối ưu tại `models/nb_welfake_model.pkl` và xuất các đồ thị báo cáo.
+- Cập nhật định hướng Phase 8: Chính thức bỏ qua Kịch bản 3 (Huấn luyện gộp/Pooled-training trên tập dữ liệu mix ISOT + WELFake) do dung lượng dữ liệu quá lớn, ưu tiên cho việc đánh giá chéo (cross-dataset evaluation) trên các mô hình còn lại.
+
+### Kết quả Naive Bayes trên WELFake
+
+- Lưới tham số tối ưu: `alpha=0.01`, `fit_prior=True`
+- Điểm Accuracy trên tập Validation: **84.16%**
+- Điểm F1-score (weighted) trên tập Validation: **84.14%**
+- Confusion Matrix: `[[4255, 999], [713, 4844]]`
+
+### Nhận xét
+
+- Multinomial Naive Bayes bị tụt hiệu năng đáng kể (so với 95% trên tập ISOT). Nguyên nhân chính là do giả định độc lập không còn đủ khả năng khái quát trên bộ dữ liệu tổng hợp đa dạng văn phong (hơn 70,000 bài) như WELFake.
+
+---
+
 ## [2026-06-23] Phase 7.4.4 — Random Forest WELFake hoàn thành & Nén mô hình
 
 ### Hoàn thành
@@ -14,11 +35,11 @@
 ### Kết quả
 
 - Best params: `max_depth=None`, `min_samples_split=2`, `n_estimators=300`
-- Best CV F1 weighted: **0.9471**
-- Validation Accuracy: **0.9492**
-- Validation F1 weighted: **0.9492**
-- Lần chạy cuối: GridSearchCV hoàn thành trong **6683.34 giây** (~111 phút). Quá trình mất thời gian rất dài do sự chênh lệch lớn về độ đa dạng của dữ liệu (WELFake vs ISOT) khiến cây quyết định phải phân nhánh rất sâu.
-- Confusion matrix: `[[5279, 278], [263, 4991]]`
+- Best CV F1 weighted: **0.9474**
+- Validation Accuracy: **0.9493**
+- Validation F1 weighted: **0.9493**
+- Lần chạy cuối: GridSearchCV hoàn thành trong **1273.21 giây** (~21.2 phút).
+- Confusion matrix: `[[5003, 251], [297, 5260]]`
 
 ---
 

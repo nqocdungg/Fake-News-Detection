@@ -1,4 +1,4 @@
-Training/GridSearch time: 5.37 seconds
+Training/GridSearch time: 4.72 seconds
 Best params: {'alpha': 0.01, 'fit_prior': True}
 Best CV accuracy: 0.846544
 Validation accuracy: 0.841643
