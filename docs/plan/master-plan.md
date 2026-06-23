@@ -40,9 +40,9 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 2 | EDA ISOT | ✅ Hoàn thành |
 | 3 | TF-IDF Vectorization ISOT | ✅ Hoàn thành |
 | 4 | Model Training ISOT (4 thuật toán) | ✅ Hoàn thành |
-| 5 | Model Comparison ISOT (same-dataset) | ⏳ Chờ Phase 4 hoàn thành |
-| 6 | Feature & Error Analysis | ⏳ Chờ Phase 5 |
-| 7 | Dataset 2 Integration (WELFake) | 🔄 7.1–7.3 xong; SVM & LR hoàn thành (đã sửa nhãn); NB/RF còn thiếu |
+| 5 | Model Comparison ISOT (same-dataset) | ✅ Hoàn thành |
+| 6 | Feature & Error Analysis | ✅ Hoàn thành |
+| 7 | Dataset 2 Integration (WELFake) | ✅ Hoàn thành (SVM, LR, NB, RF) |
 | 8 | Cross-Dataset Evaluation | 🔄 Đang thực hiện — Xong LR & SVM cho Kịch bản 1 & 2 |
 | 9 | Report & Documentation | ⏳ Chờ tất cả |
 
@@ -125,8 +125,8 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 5 — Model Comparison ISOT (Same-Dataset)
-**Trạng thái:** ⏳ Chờ Phase 4 hoàn thành (RF)  
-**Notebook:** `08_comparison.ipynb` *(có markdown, chưa có code)*
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `08_comparison.ipynb` *(hoàn thành)*
 
 **Nội dung:**
 - Load 4 models, predict trên **test set ISOT** (lần đầu tiên dùng test set)
@@ -136,8 +136,8 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 6 — Feature & Error Analysis
-**Trạng thái:** ⏳ Chờ Phase 5  
-**Notebook:** `09_feature_error_analysis.ipynb` *(có markdown, chưa có code)*
+**Trạng thái:** ✅ Hoàn thành  
+**Notebook:** `09_feature_error_analysis.ipynb` *(hoàn thành)*
 
 **Nội dung:**
 - Top 20 từ quan trọng FAKE vs REAL (LR coefficients)
@@ -146,7 +146,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 7 — Dataset 2 Integration: WELFake
-**Trạng thái:** 🔄 7.1–7.3 ✅ / 7.4 hoàn thành 3/4 model (còn NB)
+**Trạng thái:** ✅ Hoàn thành
 **Plan tổng thể:** `docs/plan/phase-07-dataset2-welfake.md`
 
 #### Sub-phase 7.1 — Preprocessing WELFake
@@ -323,8 +323,8 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 05 | `05_logistic_regression.ipynb` | ISOT splits | `lr_model.pkl` ✅ |
 | 06 | `06_svm.ipynb` | ISOT splits | `svm_model.pkl` ✅ |
 | 07 | `07_random_forest.ipynb` | ISOT splits | `rf_model.pkl` ✅ |
-| 08 | `08_comparison.ipynb` | 4 models + ISOT test | metrics bảng ⏳ |
-| 09 | `09_feature_error_analysis.ipynb` | best model | feature charts ⏳ |
+| 08 | `08_comparison.ipynb` | 4 models + ISOT test | metrics bảng ✅ |
+| 09 | `09_feature_error_analysis.ipynb` | best model | feature charts ✅ |
 | 10 | `10_welfake_preprocessing.ipynb` | KaggleHub WELFake | `preprocessed_welfake_full.csv` ✅ |
 | 11 | `11_welfake_eda.ipynb` | WELFake CSV | WELFake charts ✅ |
 | 12 | `12_welfake_vectorization.ipynb` | WELFake CSV | WELFake TF-IDF splits ✅ |
@@ -356,7 +356,7 @@ Phase 0 → Phase 1 → Phase 2
                                          ↓
                                       Phase 5 → Phase 6
                                                     ↓
-          Phase 7.1✅→7.2✅→7.3✅→7.4 (SVM✅ LR✅ RF✅ NB⏳) → Phase 8 → Phase 9
+          Phase 7.1✅→7.2✅→7.3✅→7.4 (SVM✅ LR✅ RF✅ NB✅) → Phase 8 → Phase 9
 ```
 
 ---

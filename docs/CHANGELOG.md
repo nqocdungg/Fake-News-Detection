@@ -2,6 +2,15 @@
 
 ---
 
+## [2026-06-24] Nén dữ liệu `.pkl` và cập nhật Phase 6
+
+### Hoàn thành
+
+- Cập nhật notebooks `03_vectorization.ipynb` và `12_welfake_vectorization.ipynb` để lưu file text thô dưới định dạng `.pkl` với tham số nén `compress=3` bằng `joblib`. 
+- Giảm dung lượng file lớn nhất `data/welfake/X_train.pkl` (hơn 150MB xuống còn ~66.2MB).
+- Chạy thành công notebook `09_feature_error_analysis.ipynb` (Phase 6), trích xuất và in ra các ví dụ cụ thể của những mẫu bị dự đoán nhầm (False Positives và False Negatives) cùng với danh sách từ khóa có TF-IDF nổi bật để phân tích nguyên nhân lỗi.
+
+---
 ## [2026-06-23] Phase 7.4.2 & Cập nhật Kế hoạch Phase 8
 
 ### Hoàn thành
