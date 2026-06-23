@@ -1,0 +1,38 @@
+{
+  "best_model": "SVM (LinearSVC)",
+  "best_f1_weighted": 0.945149025257827,
+  "rows": [
+    {
+      "model": "SVM (LinearSVC)",
+      "accuracy": 0.9451535331113577,
+      "precision_weighted": 0.945158130242027,
+      "recall_weighted": 0.9451535331113577,
+      "f1_weighted": 0.945149025257827,
+      "training_time_seconds": NaN
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.9433962264150944,
+      "precision_weighted": 0.9433958774432051,
+      "recall_weighted": 0.9433962264150944,
+      "f1_weighted": 0.9433934349230854,
+      "training_time_seconds": NaN
+    },
+    {
+      "model": "Naive Bayes",
+      "accuracy": 0.8406400295967443,
+      "precision_weighted": 0.8411308192090422,
+      "recall_weighted": 0.8406400295967443,
+      "f1_weighted": 0.8404590311581082,
+      "training_time_seconds": 5.365483999252319
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.24870514243433223,
+      "precision_weighted": 0.2121090424272615,
+      "recall_weighted": 0.24870514243433223,
+      "f1_weighted": 0.22226472062193142,
+      "training_time_seconds": 6683.339401245117
+    }
+  ]
+}
