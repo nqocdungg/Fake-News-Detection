@@ -43,7 +43,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 5 | Model Comparison ISOT (same-dataset) | ✅ Hoàn thành |
 | 6 | Feature & Error Analysis | ✅ Hoàn thành |
 | 7 | Dataset 2 Integration (WELFake) | ✅ Hoàn thành (SVM, LR, NB, RF) |
-| 8 | Cross-Dataset Evaluation | 🔄 Đang thực hiện — Xong LR & SVM cho Kịch bản 1 & 2 |
+| 8 | Cross-Dataset Evaluation | ✅ Hoàn thành — Xong cả 4 model cho Kịch bản 1 & 2 |
 | 9 | Report & Documentation | ⏳ Chờ tất cả |
 
 ---
@@ -252,24 +252,32 @@ Thu thập dữ liệu (ISOT + WELFake)
 ---
 
 ### Phase 8 — Evaluation & Comparison (Chiến lược đánh giá và so sánh)
-**Trạng thái:** 🔄 Đang thực hiện — Đã đánh giá Kịch bản 1 & 2 cho LR & SVM (Bỏ qua Pooled-training vì quá nặng, thiếu cross-eval cho NB & RF).
+**Trạng thái:** ✅ Hoàn thành — Đã đánh giá Kịch bản 1 & 2 cho cả 4 mô hình (NB, LR, SVM, RF). Bỏ qua Pooled-training.
 
 **Notebooks:**
-- `17_cross_dataset_eval.ipynb` 🔄 Đang thực hiện (Đã có LR & SVM, thiếu NB & RF)
+- `17_cross_dataset_eval.ipynb` ✅ Hoàn thành
 - `18_pooled_training_eval.ipynb` ⏭️ Bỏ qua
 
-#### Kết quả thực nghiệm Kịch bản 1 & 2 (LR & SVM):
+#### Kết quả thực nghiệm Kịch bản 1 & 2 (Cả 4 mô hình):
 
-| Mô hình | Kịch bản thực nghiệm | Accuracy | Precision | Recall | F1-Score (weighted) |
-|---|---|---|---|---|---|
-| **Logistic Regression** | ISOT ➔ ISOT (In-domain) | 0.9943 | 0.9943 | 0.9943 | 0.9943 |
-| | WELFake ➔ WELFake (In-domain) | 0.9434 | 0.9434 | 0.9434 | 0.9434 |
-| | ISOT ➔ WELFake (Cross-domain) | 0.8557 | 0.8658 | 0.8557 | 0.8543 |
-| | WELFake ➔ ISOT (Cross-domain) | **0.9829** | 0.9830 | 0.9829 | **0.9829** |
-| **SVM (LinearSVC)** | ISOT ➔ ISOT (In-domain) | 0.9955 | 0.9955 | 0.9955 | 0.9955 |
-| | WELFake ➔ WELFake (In-domain) | 0.9452 | 0.9452 | 0.9452 | 0.9451 |
-| | ISOT ➔ WELFake (Cross-domain) | 0.8553 | 0.8653 | 0.8553 | 0.8538 |
-| | WELFake ➔ ISOT (Cross-domain) | **0.9826** | 0.9826 | 0.9826 | **0.9826** |
+| Mô hình | Kịch bản thực nghiệm | Accuracy | F1-Score (weighted) |
+|---|---|---|---|
+| **Naive Bayes** | ISOT ➔ ISOT (In-domain) | 0.9502 | 0.9501 |
+| | WELFake ➔ WELFake (In-domain) | 0.8406 | 0.8405 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8004 | 0.7989 |
+| | WELFake ➔ ISOT (Cross-domain) | 0.9438 | 0.9436 |
+| **Logistic Regression** | ISOT ➔ ISOT (In-domain) | 0.9834 | 0.9834 |
+| | WELFake ➔ WELFake (In-domain) | 0.9434 | 0.9434 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8557 | 0.8543 |
+| | WELFake ➔ ISOT (Cross-domain) | 0.9829 | 0.9829 |
+| **SVM (LinearSVC)** | ISOT ➔ ISOT (In-domain) | 0.9865 | 0.9865 |
+| | WELFake ➔ WELFake (In-domain) | 0.9452 | 0.9451 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8553 | 0.8538 |
+| | WELFake ➔ ISOT (Cross-domain) | 0.9826 | 0.9826 |
+| **Random Forest** | ISOT ➔ ISOT (In-domain) | 0.9741 | 0.9741 |
+| | WELFake ➔ WELFake (In-domain) | 0.9499 | 0.9499 |
+| | ISOT ➔ WELFake (Cross-domain) | 0.8625 | 0.8616 |
+| | WELFake ➔ ISOT (Cross-domain) | **0.9940** | **0.9940** |
 
 **Nhận xét quan trọng:**
 1. **Khả năng tổng quát hóa tuyệt vời của WELFake**: Mô hình huấn luyện trên WELFake khi test trên ISOT đạt hiệu năng gần như hoàn hảo (~98.3% F1-score). Điều này chứng minh tập WELFake (72K bài viết từ nhiều nguồn) có độ phủ từ vựng và tính tổng quát rất lớn, bao quát tốt tập ISOT.
@@ -332,7 +340,7 @@ Thu thập dữ liệu (ISOT + WELFake)
 | 14 | `14_welfake_naive_bayes.ipynb` | WELFake train/val | `nb_welfake_model.pkl` ✅ |
 | 15 | `15_welfake_logistic_regression.ipynb` | WELFake train/val | `lr_welfake_model.pkl` ✅ |
 | 16 | `16_welfake_random_forest.ipynb` | WELFake train/val | `rf_welfake_model.pkl` ✅ |
-| 17 | `17_cross_dataset_eval.ipynb` | all models + exact raw test splits | cross-eval table ⏳ |
+| 17 | `17_cross_dataset_eval.ipynb` | all models + exact raw test splits | cross-eval table ✅ |
 | 18 | `18_pooled_training_eval.ipynb` | all models + exact raw test splits | pooled-eval table ⏭️ Bỏ qua |
 
 ---

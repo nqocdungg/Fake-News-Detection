@@ -2,6 +2,39 @@
 
 ---
 
+## [2026-06-24] Sửa nhãn WELFake — CSV & Notebook 17 hoàn chỉnh
+
+### Vấn đề phát hiện
+
+Điều tra kỹ dataset gốc Kaggle (`saurabhshahane/fake-news-classification`) xác nhận:
+- **Kaggle WELFake gốc**: `label=0 → REAL (35,028)`, `label=1 → FAKE (37,046)` — đồng nhất với quy ước dự án.
+- **`preprocessed_welfake_full.csv` trên đĩa** (từ một phiên bản notebook 10 cũ có inversion bug): có nhãn bị đảo ngược `0=FAKE (37,046)`, `1=REAL (35,028)`.
+- Các `y_*.pkl` và 4 model WELFake **vẫn ĐÚNG** (được tạo từ CSV đúng trước đó, không bị ảnh hưởng).
+
+### Đã sửa
+
+- **`data/processed/preprocessed_welfake_full.csv`**: Đảo ngược nhãn bằng `1 - label` → khôi phục `0=REAL (35,028)`, `1=FAKE (37,046)`. Xác nhận phân phối khớp hoàn toàn với `y_*.pkl` hiện có.
+- **Notebook 17 (`17_cross_dataset_eval.ipynb`)**: Cập nhật toàn bộ output cells sau khi CSV được sửa. Bổ sung NB và RF vào đánh giá (đã triển khai từ trước). Sửa F1 bar chart đúng layout và label.
+
+### Kết quả xác nhận (pkl y_test + model pkl)
+
+Đánh giá in-domain dùng `X_test_tfidf.pkl` + `y_test.pkl` (đúng test split gốc). Cross-domain dùng raw text từ CSV, transform với vectorizer của dataset kia.
+
+| Model | ISOT→ISOT | WELFake→WELFake | ISOT→WELFake | WELFake→ISOT |
+|-------|-----------|-----------------|--------------|--------------|
+| NB  | 0.9501 | 0.8405 | 0.7989 | 0.9436 |
+| LR  | 0.9834 | 0.9434 | 0.8543 | 0.9829 |
+| SVM | 0.9865 | 0.9451 | 0.8538 | 0.9826 |
+| RF  | 0.9741 | 0.9499 | 0.8616 | 0.9940 |
+
+### Nhận xét & Kết luận (Phase 8)
+
+- **Domain Shift (Lệch miền):** Khi sử dụng mô hình học từ ISOT (vốn mang phong cách báo chí chuẩn mực, hẹp) áp dụng vào WELFake (mạng xã hội đa nguồn, nhiễu), độ chính xác sụt giảm mạnh (từ ~98% xuống còn ~85%).
+- **Sức mạnh của Dữ liệu lớn (Data is King):** Mô hình được huấn luyện trên tập WELFake (đa dạng, phức tạp) có khả năng tổng quát hóa cực kỳ ấn tượng. Khi test ngược lại trên ISOT, mô hình đạt điểm số gần như tuyệt đối (Random Forest đạt kỷ lục **99.40%**, SVM và LR đều đạt ~98.3%).
+- **Lựa chọn thuật toán:** Random Forest chứng minh được vị thế tối thượng về độ chính xác ở bài toán này nhưng đánh đổi bằng thời gian huấn luyện rất dài. SVM (LinearSVC) và Logistic Regression vẫn là lựa chọn cực kỳ thực dụng khi tốc độ nhanh gấp hàng ngàn lần mà hiệu năng chỉ thấp hơn khoảng 1%.
+
+---
+
 ## [2026-06-24] Nén dữ liệu `.pkl` và cập nhật Phase 6
 
 ### Hoàn thành

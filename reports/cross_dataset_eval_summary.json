@@ -1,0 +1,74 @@
+{
+  "Naive Bayes": {
+    "ISOT→ISOT": {
+      "accuracy": 0.9502,
+      "f1_weighted": 0.9501
+    },
+    "WELFake→WELFake": {
+      "accuracy": 0.8406,
+      "f1_weighted": 0.8405
+    },
+    "ISOT→WELFake": {
+      "accuracy": 0.8004,
+      "f1_weighted": 0.7989
+    },
+    "WELFake→ISOT": {
+      "accuracy": 0.9438,
+      "f1_weighted": 0.9436
+    }
+  },
+  "Logistic Regression": {
+    "ISOT→ISOT": {
+      "accuracy": 0.9834,
+      "f1_weighted": 0.9834
+    },
+    "WELFake→WELFake": {
+      "accuracy": 0.9434,
+      "f1_weighted": 0.9434
+    },
+    "ISOT→WELFake": {
+      "accuracy": 0.8557,
+      "f1_weighted": 0.8543
+    },
+    "WELFake→ISOT": {
+      "accuracy": 0.9829,
+      "f1_weighted": 0.9829
+    }
+  },
+  "SVM (LinearSVC)": {
+    "ISOT→ISOT": {
+      "accuracy": 0.9865,
+      "f1_weighted": 0.9865
+    },
+    "WELFake→WELFake": {
+      "accuracy": 0.9452,
+      "f1_weighted": 0.9451
+    },
+    "ISOT→WELFake": {
+      "accuracy": 0.8553,
+      "f1_weighted": 0.8538
+    },
+    "WELFake→ISOT": {
+      "accuracy": 0.9826,
+      "f1_weighted": 0.9826
+    }
+  },
+  "Random Forest": {
+    "ISOT→ISOT": {
+      "accuracy": 0.9741,
+      "f1_weighted": 0.9741
+    },
+    "WELFake→WELFake": {
+      "accuracy": 0.9499,
+      "f1_weighted": 0.9499
+    },
+    "ISOT→WELFake": {
+      "accuracy": 0.8625,
+      "f1_weighted": 0.8616
+    },
+    "WELFake→ISOT": {
+      "accuracy": 0.994,
+      "f1_weighted": 0.994
+    }
+  }
+}
