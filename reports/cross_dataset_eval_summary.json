@@ -1,74 +1,146 @@
-{
-  "Naive Bayes": {
-    "ISOT→ISOT": {
-      "accuracy": 0.9502,
-      "f1_weighted": 0.9501
-    },
-    "WELFake→WELFake": {
-      "accuracy": 0.8406,
-      "f1_weighted": 0.8405
-    },
-    "ISOT→WELFake": {
-      "accuracy": 0.8004,
-      "f1_weighted": 0.7989
-    },
-    "WELFake→ISOT": {
-      "accuracy": 0.9438,
-      "f1_weighted": 0.9436
-    }
+[
+  {
+    "model": "Logistic Regression",
+    "scenario": "ISOT → ISOT",
+    "eval_type": "In-domain",
+    "accuracy": 0.9943,
+    "precision_weighted": 0.9943,
+    "recall_weighted": 0.9943,
+    "f1_weighted": 0.9943
   },
-  "Logistic Regression": {
-    "ISOT→ISOT": {
-      "accuracy": 0.9834,
-      "f1_weighted": 0.9834
-    },
-    "WELFake→WELFake": {
-      "accuracy": 0.9434,
-      "f1_weighted": 0.9434
-    },
-    "ISOT→WELFake": {
-      "accuracy": 0.8557,
-      "f1_weighted": 0.8543
-    },
-    "WELFake→ISOT": {
-      "accuracy": 0.9829,
-      "f1_weighted": 0.9829
-    }
+  {
+    "model": "Logistic Regression",
+    "scenario": "WELFake → WELFake",
+    "eval_type": "In-domain",
+    "accuracy": 0.9434,
+    "precision_weighted": 0.9434,
+    "recall_weighted": 0.9434,
+    "f1_weighted": 0.9434
   },
-  "SVM (LinearSVC)": {
-    "ISOT→ISOT": {
-      "accuracy": 0.9865,
-      "f1_weighted": 0.9865
-    },
-    "WELFake→WELFake": {
-      "accuracy": 0.9452,
-      "f1_weighted": 0.9451
-    },
-    "ISOT→WELFake": {
-      "accuracy": 0.8553,
-      "f1_weighted": 0.8538
-    },
-    "WELFake→ISOT": {
-      "accuracy": 0.9826,
-      "f1_weighted": 0.9826
-    }
+  {
+    "model": "Logistic Regression",
+    "scenario": "ISOT → WELFake",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.8557,
+    "precision_weighted": 0.8658,
+    "recall_weighted": 0.8557,
+    "f1_weighted": 0.8543
   },
-  "Random Forest": {
-    "ISOT→ISOT": {
-      "accuracy": 0.9741,
-      "f1_weighted": 0.9741
-    },
-    "WELFake→WELFake": {
-      "accuracy": 0.9499,
-      "f1_weighted": 0.9499
-    },
-    "ISOT→WELFake": {
-      "accuracy": 0.8625,
-      "f1_weighted": 0.8616
-    },
-    "WELFake→ISOT": {
-      "accuracy": 0.994,
-      "f1_weighted": 0.994
-    }
+  {
+    "model": "Logistic Regression",
+    "scenario": "WELFake → ISOT",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.9829,
+    "precision_weighted": 0.983,
+    "recall_weighted": 0.9829,
+    "f1_weighted": 0.9829
+  },
+  {
+    "model": "SVM (LinearSVC)",
+    "scenario": "ISOT → ISOT",
+    "eval_type": "In-domain",
+    "accuracy": 0.9955,
+    "precision_weighted": 0.9955,
+    "recall_weighted": 0.9955,
+    "f1_weighted": 0.9955
+  },
+  {
+    "model": "SVM (LinearSVC)",
+    "scenario": "WELFake → WELFake",
+    "eval_type": "In-domain",
+    "accuracy": 0.9452,
+    "precision_weighted": 0.9452,
+    "recall_weighted": 0.9452,
+    "f1_weighted": 0.9451
+  },
+  {
+    "model": "SVM (LinearSVC)",
+    "scenario": "ISOT → WELFake",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.8553,
+    "precision_weighted": 0.8653,
+    "recall_weighted": 0.8553,
+    "f1_weighted": 0.8538
+  },
+  {
+    "model": "SVM (LinearSVC)",
+    "scenario": "WELFake → ISOT",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.9826,
+    "precision_weighted": 0.9826,
+    "recall_weighted": 0.9826,
+    "f1_weighted": 0.9826
+  },
+  {
+    "model": "Naive Bayes",
+    "scenario": "ISOT → ISOT",
+    "eval_type": "In-domain",
+    "accuracy": 0.9507,
+    "precision_weighted": 0.9507,
+    "recall_weighted": 0.9507,
+    "f1_weighted": 0.9507
+  },
+  {
+    "model": "Naive Bayes",
+    "scenario": "WELFake → WELFake",
+    "eval_type": "In-domain",
+    "accuracy": 0.8406,
+    "precision_weighted": 0.8411,
+    "recall_weighted": 0.8406,
+    "f1_weighted": 0.8405
+  },
+  {
+    "model": "Naive Bayes",
+    "scenario": "ISOT → WELFake",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.8004,
+    "precision_weighted": 0.8061,
+    "recall_weighted": 0.8004,
+    "f1_weighted": 0.7989
+  },
+  {
+    "model": "Naive Bayes",
+    "scenario": "WELFake → ISOT",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.9438,
+    "precision_weighted": 0.9444,
+    "recall_weighted": 0.9438,
+    "f1_weighted": 0.9436
+  },
+  {
+    "model": "Random Forest",
+    "scenario": "ISOT → ISOT",
+    "eval_type": "In-domain",
+    "accuracy": 0.9936,
+    "precision_weighted": 0.9936,
+    "recall_weighted": 0.9936,
+    "f1_weighted": 0.9936
+  },
+  {
+    "model": "Random Forest",
+    "scenario": "WELFake → WELFake",
+    "eval_type": "In-domain",
+    "accuracy": 0.9499,
+    "precision_weighted": 0.9499,
+    "recall_weighted": 0.9499,
+    "f1_weighted": 0.9499
+  },
+  {
+    "model": "Random Forest",
+    "scenario": "ISOT → WELFake",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.8618,
+    "precision_weighted": 0.8676,
+    "recall_weighted": 0.8618,
+    "f1_weighted": 0.861
+  },
+  {
+    "model": "Random Forest",
+    "scenario": "WELFake → ISOT",
+    "eval_type": "Cross-domain",
+    "accuracy": 0.994,
+    "precision_weighted": 0.994,
+    "recall_weighted": 0.994,
+    "f1_weighted": 0.994
   }
-}
+]

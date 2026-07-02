@@ -1,5 +1,5 @@
-Training/GridSearch time: 1273.21 seconds
-Best params: {'max_depth': None, 'min_samples_split': 2, 'n_estimators': 300}
+Training/GridSearch time: 2107.19 seconds
+Best params: {'max_depth': None, 'min_impurity_decrease': 0.0, 'min_samples_split': 2, 'n_estimators': 300}
 Best CV weighted F1: 0.947379
 Validation accuracy: 0.949311
 Validation weighted F1: 0.949316

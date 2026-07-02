@@ -1,0 +1,171 @@
+import os
+import time
+import joblib
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+from pathlib import Path
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_recall_fscore_support
+
+warnings.filterwarnings('ignore')
+sns.set_style("whitegrid")
+
+# Cấu hình đường dẫn
+ROOT = Path('..').resolve()
+DATA_DIR = ROOT / 'data'
+MODELS_DIR = ROOT / 'models'
+REPORTS_DIR = ROOT / 'reports'
+REPORTS_DIR.mkdir(exist_ok=True)
+
+=====
+
+# Vẽ ma trận nhầm lẫn cho Logistic Regression
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# 1. ISOT Model on ISOT Test
+ConfusionMatrixDisplay.from_predictions(y_test_isot, y_pred_lr_isot_isot, cmap='Blues', ax=axes[0, 0], display_labels=['REAL', 'FAKE'])
+axes[0, 0].set_title("LR: ISOT Model on ISOT Test (In-domain)")
+
+# 2. WELFake Model on WELFake Test
+ConfusionMatrixDisplay.from_predictions(y_test_wf, y_pred_lr_wf_wf, cmap='Blues', ax=axes[0, 1], display_labels=['REAL', 'FAKE'])
+axes[0, 1].set_title("LR: WELFake Model on WELFake Test (In-domain)")
+
+# 3. ISOT Model on WELFake Test
+ConfusionMatrixDisplay.from_predictions(y_test_wf, y_pred_lr_isot_wf, cmap='Oranges', ax=axes[1, 0], display_labels=['REAL', 'FAKE'])
+axes[1, 0].set_title("LR: ISOT Model on WELFake Test (Cross-domain)")
+
+# 4. WELFake Model on ISOT Test
+ConfusionMatrixDisplay.from_predictions(y_test_isot, y_pred_lr_wf_isot, cmap='Oranges', ax=axes[1, 1], display_labels=['REAL', 'FAKE'])
+axes[1, 1].set_title("LR: WELFake Model on ISOT Test (Cross-domain)")
+
+plt.tight_layout()
+plt.savefig(REPORTS_DIR / 'lr_cross_eval_confusion_matrices.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+=====
+
+# Vẽ ma trận nhầm lẫn cho SVM
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# 1. ISOT Model on ISOT Test
+ConfusionMatrixDisplay.from_predictions(y_test_isot, y_pred_svm_isot_isot, cmap='Blues', ax=axes[0, 0], display_labels=['REAL', 'FAKE'])
+axes[0, 0].set_title("SVM: ISOT Model on ISOT Test (In-domain)")
+
+# 2. WELFake Model on WELFake Test
+ConfusionMatrixDisplay.from_predictions(y_test_wf, y_pred_svm_wf_wf, cmap='Blues', ax=axes[0, 1], display_labels=['REAL', 'FAKE'])
+axes[0, 1].set_title("SVM: WELFake Model on WELFake Test (In-domain)")
+
+# 3. ISOT Model on WELFake Test
+ConfusionMatrixDisplay.from_predictions(y_test_wf, y_pred_svm_isot_wf, cmap='Oranges', ax=axes[1, 0], display_labels=['REAL', 'FAKE'])
+axes[1, 0].set_title("SVM: ISOT Model on WELFake Test (Cross-domain)")
+
+# 4. WELFake Model on ISOT Test
+ConfusionMatrixDisplay.from_predictions(y_test_isot, y_pred_svm_wf_isot, cmap='Oranges', ax=axes[1, 1], display_labels=['REAL', 'FAKE'])
+axes[1, 1].set_title("SVM: WELFake Model on ISOT Test (Cross-domain)")
+
+plt.tight_layout()
+plt.savefig(REPORTS_DIR / 'svm_cross_eval_confusion_matrices.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+=====
+
+# Vẽ Confusion Matrix cho Naive Bayes (2×2)
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_isot, y_pred_nb_isot_isot,
+    cmap='Blues', ax=axes[0, 0], display_labels=['REAL', 'FAKE'])
+axes[0, 0].set_title('NB: ISOT → ISOT (In-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_wf, y_pred_nb_wf_wf,
+    cmap='Blues', ax=axes[0, 1], display_labels=['REAL', 'FAKE'])
+axes[0, 1].set_title('NB: WELFake → WELFake (In-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_wf, y_pred_nb_isot_wf,
+    cmap='Oranges', ax=axes[1, 0], display_labels=['REAL', 'FAKE'])
+axes[1, 0].set_title('NB: ISOT → WELFake (Cross-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_isot, y_pred_nb_wf_isot,
+    cmap='Oranges', ax=axes[1, 1], display_labels=['REAL', 'FAKE'])
+axes[1, 1].set_title('NB: WELFake → ISOT (Cross-domain)')
+
+plt.suptitle('Naive Bayes — Confusion Matrices (In-domain & Cross-domain)', fontsize=14, y=1.02)
+plt.tight_layout()
+plt.savefig(REPORTS_DIR / 'nb_cross_eval_confusion_matrices.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: nb_cross_eval_confusion_matrices.png')
+
+
+=====
+
+# Vẽ Confusion Matrix cho Random Forest (2×2)
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_isot, y_pred_rf_isot_isot,
+    cmap='Blues', ax=axes[0, 0], display_labels=['REAL', 'FAKE'])
+axes[0, 0].set_title('RF: ISOT → ISOT (In-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_wf, y_pred_rf_wf_wf,
+    cmap='Blues', ax=axes[0, 1], display_labels=['REAL', 'FAKE'])
+axes[0, 1].set_title('RF: WELFake → WELFake (In-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_wf, y_pred_rf_isot_wf,
+    cmap='Oranges', ax=axes[1, 0], display_labels=['REAL', 'FAKE'])
+axes[1, 0].set_title('RF: ISOT → WELFake (Cross-domain)')
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test_isot, y_pred_rf_wf_isot,
+    cmap='Oranges', ax=axes[1, 1], display_labels=['REAL', 'FAKE'])
+axes[1, 1].set_title('RF: WELFake → ISOT (Cross-domain)')
+
+plt.suptitle('Random Forest — Confusion Matrices (In-domain & Cross-domain)', fontsize=14, y=1.02)
+plt.tight_layout()
+plt.savefig(REPORTS_DIR / 'rf_cross_eval_confusion_matrices.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: rf_cross_eval_confusion_matrices.png')
+
+
+=====
+
+# Biểu đồ so sánh F1 — nhóm theo loại kịch bản (In-domain vs Cross-domain)
+import matplotlib.patches as mpatches
+
+df_plot = df_results.reset_index()
+df_plot['Label'] = df_plot['Model'] + '\n' + df_plot['Scenario']
+colors = df_plot['Type'].map({'In-domain': '#2196F3', 'Cross-domain': '#FF9800'})
+
+fig, ax = plt.subplots(figsize=(14, 9))
+bars = ax.barh(df_plot['Label'], df_plot['F1 (weighted)'], color=colors, edgecolor='white')
+
+for bar, val in zip(bars, df_plot['F1 (weighted)']):
+    ax.text(min(val + 0.002, 1.005), bar.get_y() + bar.get_height() / 2,
+            f'{val:.4f}', va='center', fontsize=9)
+
+# Đường phân chia giữa các model (sau mỗi 4 kịch bản)
+for i in [4, 8, 12]:
+    ax.axhline(y=i - 0.5, color='gray', linewidth=0.8, linestyle='--', alpha=0.6)
+
+# Legend
+legend_patches = [
+    mpatches.Patch(color='#2196F3', label='In-domain (Train=Test dataset)'),
+    mpatches.Patch(color='#FF9800', label='Cross-domain (Train≠Test dataset)'),
+]
+ax.legend(handles=legend_patches, loc='lower right', fontsize=10)
+
+ax.set_xlim(0.75, 1.03)
+ax.set_xlabel('F1-Score (Weighted)', fontsize=12)
+ax.set_title('Cross-Dataset Evaluation — F1-Score (Weighted)\n4 Mô hình × 4 Kịch bản', fontsize=13)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.savefig(REPORTS_DIR / 'cross_eval_f1_comparison.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: cross_eval_f1_comparison.png')

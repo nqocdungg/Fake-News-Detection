@@ -8,7 +8,7 @@
       "precision_weighted": 0.9865614007152795,
       "recall_weighted": 0.9865470852017937,
       "f1_weighted": 0.9865423796440137,
-      "training_time_seconds": 4.910333156585693
+      "training_time_seconds": 12.641003131866455
     },
     {
       "model": "Logistic Regression",
@@ -16,15 +16,15 @@
       "precision_weighted": 0.9834842412248088,
       "recall_weighted": 0.9834425664022076,
       "f1_weighted": 0.9834331050024785,
-      "training_time_seconds": 10.561191082000732
+      "training_time_seconds": 39.68070459365845
     },
     {
       "model": "Random Forest",
-      "accuracy": 0.9741290100034494,
-      "precision_weighted": 0.9743776600796002,
-      "recall_weighted": 0.9741290100034494,
-      "f1_weighted": 0.9740923491284149,
-      "training_time_seconds": 235.9170160293579
+      "accuracy": 0.9748189030700242,
+      "precision_weighted": 0.9749989839011116,
+      "recall_weighted": 0.9748189030700242,
+      "f1_weighted": 0.9747885386560697,
+      "training_time_seconds": 600.3360726833344
     },
     {
       "model": "Naive Bayes",
