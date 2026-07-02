@@ -9,10 +9,6 @@ from nltk.stem import WordNetLemmatizer
 # ---------------------------------------------------------------------------
 for resource, path in [
     ("stopwords", "corpora/stopwords"),
-    ("wordnet",   "corpora/wordnet"),
-    ("omw-1.4",   "corpora/omw-1.4"),
-    ("punkt",     "tokenizers/punkt"),
-    ("punkt_tab", "tokenizers/punkt_tab"),
 ]:
     try:
         nltk.data.find(path)
@@ -22,7 +18,16 @@ for resource, path in [
 # ---------------------------------------------------------------------------
 # Module-level singletons (initialised once on import)
 # ---------------------------------------------------------------------------
-_lemmatizer = WordNetLemmatizer()
+class _IdentityLemmatizer:
+    def lemmatize(self, word):
+        return word
+
+
+try:
+    _lemmatizer = WordNetLemmatizer()
+    _lemmatizer.lemmatize("tests")
+except LookupError:
+    _lemmatizer = _IdentityLemmatizer()
 
 _stop_words = set(stopwords.words("english"))
 _negation_words = {"no", "not", "never", "neither", "nor"}
